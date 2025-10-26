@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyKLYR™ | A New Era of Clarity – Because Confusion Can Be Dangerous</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles for animations and scrolling */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse { animation: pulse 6s infinite; }
+    .horizontal-scroll { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    
+    /* Pages that load instantly and cover the screen */
+    #thankyouPage { display: none; }
+    #promisePage { display: none; }
+    
+    /* Ensure body uses the font */
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* New: Class for defining the maximum content width for the main body sections */
+    .max-content-area {
+        max-width: var(--max-site-width, 1280px); /* Use CSS variable, default to 1280px */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Style for the new icon input control panel (now removed, keeping for reference) */
+    .icon-control-card {
+        padding: 1rem;
+        border-radius: 0.75rem;
+        background-color: #f3f4f6; /* bg-gray-100 */
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+    }
+    .icon-control-input {
+        padding: 0.5rem;
+        border: 1px solid #d1d5db; /* border-gray-300 */
+        border-radius: 0.5rem;
+        width: 100%;
+        font-size: 0.875rem;
+    }
+  </style>
+  <!-- Load Inter font --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans text-gray-900">
+
+  <!-- ============================================== --><!-- CENTRAL LOGO AND ICON CONFIGURATION (USER ADJUSTABLE) --><!-- ============================================== --><script>
+    // --- WEBSITE WIDTH CONTROL (User Defined) ---
+    // Set the maximum content width for all main sections (excluding Nav and Footer)
+    const MAX_CONTENT_WIDTH_PX = '1500px'; 
+
+    // --- USER CONTROLLED LOGO URL ---
+    // Change this variable to update the logo image across the site.
+    const KLYR_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png';
+
+    // --- USER CONTROLLED ICON URLS (EDIT THESE VALUES TO CHANGE THE ICONS) ---
+    const ICON_CONFIG = [
+      { id: 'iconHealthSafety', title: 'Health & Safety', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_User.png' },
+      { id: 'iconFoodBeverage', title: 'Food & Beverage', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Food.png' },
+      { id: 'iconRetailPackaging', title: 'Retail & Packaging', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Retail.png' },
+      { id: 'iconTechEarly', title: 'Tech Early Adopters', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Tech.png' },
+      { id: 'iconSustainability', title: 'Sustainability', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Sustainability.png' },
+    ];
+    
+    // Fallback URLs for error handling
+    const LOGO_PLACEHOLDER = 'https://placehold.co/120x30/E50914/ffffff?text=KLYR+Logo';
+    const ICON_ERROR_PLACEHOLDER = 'https://placehold.co/64x64/6B7280/ffffff?text=IMG+Error';
+
+    // Function to apply the URL and error handler for a single image element
+    const applyImage = (elementId, url, fallback) => {
+        const imgElement = document.getElementById(elementId);
+        if (imgElement) {
+            imgElement.setAttribute('data-icon-id', elementId); 
+            imgElement.src = url;
+            imgElement.onerror = function() {
+                this.onerror = null; // Prevent infinite loop on failed fallback
+                this.src = fallback;
+            };
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set the CSS variable for max width, making the 'max-content-area' class functional
+      document.documentElement.style.setProperty('--max-site-width', MAX_CONTENT_WIDTH_PX);
+
+      // 1. Initialize Logos
+      applyImage('navLogoImg', KLYR_LOGO_URL, LOGO_PLACEHOLDER);
+      applyImage('promiseLogoImg', KLYR_LOGO_URL, LOGO_PLACEHOLDER);
+
+      // 2. Initialize Icons from ICON_CONFIG
+      ICON_CONFIG.forEach(config => {
+        applyImage(config.id, config.defaultUrl, ICON_ERROR_PLACEHOLDER);
+      });
+      
+      // Removed the input listeners as the front-end control panel is now gone.
+    });
+  </script>
+  
+  <!-- Navigation Menu (Minimalistic and Sticky) --><nav class="sticky top-0 z-[70] bg-white p-4 flex justify-between items-center border-b border-gray-100">
+    <!-- Logo/Brand (Left) - Uses KLYR_LOGO_URL set by the script block above --><a id="navLogoBtn" href="javascript:void(0);" class="flex items-center">
+        <!-- Added ID for script injection. Initial src is blank/placeholder. --><img 
+            id="navLogoImg"
+            src="" 
+            alt="MyKLYR Logo" 
+            class="h-6 w-auto" 
+            loading="lazy"
+        >
+    </a>
+    
+    <!-- Nav Link (Right) --><div class="flex items-center space-x-4">
+        <!-- Added ID for JavaScript targeting --><a id="navPromiseBtn" href="javascript:void(0);" class="text-gray-700 hover:text-[#E50914] font-medium text-lg transition duration-150">Our Promise</a>
+    </div>
+  </nav>
+
+  <!-- Global Wrapper for Max Width (Content and Pages) -->
+  <div class="w-full">
+
+    <!-- Main Content Container (Hidden when Promise or Thank You page is active) -->
+    <!-- Applied 'max-content-area' to constrain and center all main sections -->
+    <div id="mainContent" class="min-h-screen max-content-area">
+      <!-- Header / Hero --><section class="relative pt-20 min-h-screen bg-white flex flex-col items-center justify-center text-center overflow-hidden">
+        <div class="relative z-10 p-6">
+          <h1 class="text-5xl font-extrabold mb-4 tracking-tight">Because confusion can be dangerous.</h1>
+          <p class="text-lg mb-8 opacity-80 text-gray-800">Clarity technology built for people — for their health, safety, and peace of mind.</p>
+          <!-- Added ID for JavaScript targeting --><a id="heroPromiseBtn" href="javascript:void(0);" class="bg-[#E50914] hover:bg-[#b50710] text-white px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300">Read Our Promise</a>
+        </div>
+      </section>
+
+      <!-- Section 2 – What Is KLYR --><section id="section2" class="bg-white py-20 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-4xl font-bold mb-4">Clarity Starts Here.</h2>
+          <p class="text-lg leading-relaxed text-gray-700">
+            MyKLYR™ is a next-generation identification technology designed to eliminate confusion in everyday life — from beverages and food to medicine, personal care, and consumer electronics. Using advanced visual recognition, AI learning, and digital fingerprinting, KLYR™ allows users to identify, verify, and track authenticity and ownership in seconds.
+          </p>
+        </div>
+        <div class="relative w-full h-80 bg-gray-100 rounded-2xl shadow-inner flex items-center justify-center">
+          <span class="text-gray-500 font-semibold text-xl">🔍 Scanning Animation</span>
+        </div>
+      </section>
+
+      <!-- Section 3 – What Makes KLYR Different --><section class=" py-20 px-6 lg:px-20 text-center">
+        <h2 class="text-4xl font-bold mb-10">What Makes KLYR™ Different</h2>
+        <div class="horizontal-scroll gap-6 pb-4">
+          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
+            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">AI Visual Recognition</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Detects product identity and authenticity by shape and surface pattern.</p>
+          </div>
+          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
+            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Digital Fingerprint Technology</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Each product has a unique visual code — no barcode needed.</p>
+          </div>
+          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
+            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Health & Safety Focused</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Protects families from dangerous mix-ups.</p>
+          </div>
+          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
+            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Sustainability Advantage</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Reduces waste by helping you trust what’s already safe.</p>
+          </div>
+          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
+            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Universal Application</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Works across beverages, medicine, food, and more.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4 – Our Mission --><section class="bg-white text-black py-20 px-6 text-center">
+        <h2 class="text-4xl font-bold mb-4">Our Mission – A New Era of Clarity</h2>
+        <p class="text-lg max-w-3xl mx-auto opacity-80">We weren’t built for corporations. We were built for people.
+        For the parent who worries what goes into their child’s hands.
+        For the traveler trying to find what’s theirs in a world of sameness.
+        For the caregiver double-checking a medicine label in the middle of the night. <br><br>
+        <!-- Link to the Promise Page --><a id="missionPromiseBtn" href="javascript:void(0);" class="text-[#E50914] hover:text-[#b50710] font-semibold underline transition duration-150">Read the full KLYR Promise</a>
+        </p>
+      </section>
+
+      <!-- Section 5 – Beta Program Invitation --><section class="bg-white py-20 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-4xl font-bold mb-4">Join the KLYR™ Beta Program</h2>
+          <p class="text-lg text-gray-700 mb-6">We’re opening registration for early testers who want to be among the first to experience KLYR™.</p>
+          <ul class="text-gray-700 space-y-2 list-disc list-inside">
+            <li>Early access to the KLYR™ mobile app (iOS + Android)</li>
+            <li>Exclusive updates and feature previews</li>
+            <li>Recognition as an early contributor in the clarity revolution</li>
+          </ul>
+        </div>
+        <div class="relative w-full h-80 bg-gradient-to-tr from-gray-200 to-gray-100 rounded-2xl shadow-inner flex items-center justify-center">
+          <span class="text-gray-500 font-semibold text-xl">📱 Smartphone Scanning Mock</span>
+        </div>
+      </section>
+
+      <!-- Section 6 – Who Should Apply (Lists are centered here) --><section class="bg-gray-50 py-20 px-6 lg:px-20 text-center">
+        <h2 class="text-4xl font-bold mb-12">WHO SHOULD APPLY TO BECOME A KLYR™ BETA TESTER
+        </h2>
+        <p class="text-lg text-gray-700 mb-6">KLYR™ is launching a *New Era of Clarity* — an AI-powered system that eliminates consumer confusion to protect health, reduce waste, and restore trust in everyday life.  
+        We’re inviting thoughtful people and professionals to help us shape this breakthrough technology before public release.
+        </p>
+        <div class="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
+          <!-- Item 1: Health & Safety Conscious Users --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
+            <!-- Dynamic Icon: ID='iconHealthSafety' --><img id="iconHealthSafety" src="" alt="Health & Safety Icon" class="w-16 h-16 object-cover rounded-full mb-4">
+            <p class="text-gray-700 font-medium">Health & Safety Conscious Users</p>
+            <p class="text-gray-700 text-sm leading-relaxed">People who care about protecting themselves and their families.  
+            Ideal Testers: Parents, healthcare advocates, wellness-minded consumers.  
+            Why Join: Your feedback will help KLYR™ perfect its scanning accuracy for products that impact health and safety.
+            </p>
+          </div>
+          <!-- Item 2: Food & Beverage Professionals --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
+            <!-- Dynamic Icon: ID='iconFoodBeverage' --><img id="iconFoodBeverage" src="" alt="Food & Beverage Icon" class="w-16 h-16 object-cover rounded-full mb-4">
+            <p class="text-gray-700 font-medium">Food & Beverage Professionals</p>
+            <p class="text-gray-700 text-sm leading-relaxed">Chefs, mixologists, food-service operators, and brand managers.  
+            Ideal Testers: Restaurant and bar professionals, QA and food-safety teams.  
+            Why Join: You’ll help test real-world scanning for freshness, cross-contamination, and brand integrity.
+
+            </p>
+          </div>
+          <!-- Item 3: Retail & Packaging Innovators --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
+            <!-- Dynamic Icon: ID='iconRetailPackaging' --><img id="iconRetailPackaging" src="" alt="Retail & Packaging Icon" class="w-16 h-16 object-cover rounded-full mb-4">
+            <p class="text-gray-700 font-medium">Retail & Packaging Innovators</p>
+            <p class="text-gray-700 text-sm leading-relaxed">Designers, engineers, and creators shaping how products reach consumers.  
+            Ideal Testers: Product designers, brand managers, e-commerce specialists.  
+            Why Join: Your insights will ensure KLYR™ integrates seamlessly with packaging and retail environments.
+            </p>
+          </div>
+          <!-- Item 4: Tech Early Adopters --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
+            <!-- Dynamic Icon: ID='iconTechEarly' --><img id="iconTechEarly" src="" alt="Tech Early Adopters Icon" class="w-16 h-16 object-cover rounded-full mb-4">
+            <p class="text-gray-700 font-medium">Tech Early Adopters</p>
+            <p class="text-gray-700 text-sm leading-relaxed">The innovators who love being first to try what’s next.  
+            Ideal Testers: App developers, AI enthusiasts, UX testers, smart-device users.  
+            Why Join: You’ll stress-test KLYR™’s AI recognition and interface in diverse lighting, product, and device conditions.
+            </p>
+          </div>
+          <!-- Item 5: Sustainability Advocates --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
+            <!-- Dynamic Icon: ID='iconSustainability' --><img id="iconSustainability" src="" alt="Sustainability Icon" class="w-16 h-16 object-cover rounded-full mb-4">
+            <p class="text-gray-700 font-medium">Sustainability Advocates</p>
+            <p class="text-gray-700 text-sm leading-relaxed">Those committed to reducing waste and promoting environmental clarity.  
+            Ideal Testers: Eco-conscious consumers, recycling advocates, sustainability professionals.  
+            Why Join: You’ll explore how KLYR™ helps reduce waste by verifying safety and freshness before disposal.
+            </p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-500 mt-6">General Requirements
+        </p>
+        <!-- Centered List 1: General Requirements --><div class="flex justify-center">
+        <ul class="list-disc space-y-1 text-left max-w-md">
+          <li>Comfortable using a smartphone camera regularly.  
+        </li>
+          <li>
+            Willing to complete short in-app feedback surveys.
+          </li>
+          <li>
+             Access to a variety of products (home, food, medicine, etc.).
+          </li>
+          <li>
+            Passionate about safety, sustainability, and innovation.
+          </li>
+        </ul> </div>
+        <p class="text-sm text-gray-500 mt-6"> Beta Tester Benefit
+        </p>
+        <!-- Centered List 2: Beta Tester Benefit --><div class="flex justify-center">
+        <ul class="list-disc space-y-1 text-left max-w-md">
+          <li>Early Access to the KLYR™ app before public release.  
+        </li>
+          <li>
+           Exclusive Updates on new features and AI developments.
+          </li>
+          <li>
+             Recognition as a Founding Beta Member (optional)
+          </li>
+          <li>
+            Direct Impact: Your input helps build a technology that protects people and the planet.
+          </li>
+        </ul> </div>
+      </section>
+
+      <!-- Section 7 – Registration Form --><section id="registration" class="bg-white py-20 px-6 lg:px-20 text-center">
+        <h2 class="text-4xl font-bold mb-6">Join the Beta Below</h2>
+        <form id="betaForm" class="max-w-xl mx-auto space-y-4 text-left">
+          <input type="text" name="fullname" placeholder="Full Name" required class="w-full p-3 border border-gray-300 rounded-xl" />
+          <input type="email" name="email" placeholder="Email Address" required class="w-full p-3 border border-gray-300 rounded-xl" />
+          <select name="country" class="w-full p-3 border border-gray-300 rounded-xl">
+            <option value="">Country / Region</option>
+            <option>United States</option>
+            <option>Mexico</option>
+            <option>Canada</option>
+          </select>
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-2"><input type="radio" name="device" value="iOS" required /> iOS</label>
+            <label class="flex items-center gap-2"><input type="radio" name="device" value="Android" required /> Android</label>
+          </div>
+          <textarea name="comment" placeholder="How do you think KLYR™ could help you? (optional)" class="w-full p-3 border border-gray-300 rounded-xl"></textarea>
+          <label class="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" name="agree" required /> I agree to receive beta updates and product information from Plus Brand Industries, Inc.</label>
+          <button type="submit" class="bg-[#E50914] hover:bg-[#b50710] text-white px-8 py-4 rounded-2xl text-lg font-semibold w-full transition duration-300">Join the KLYR™ Beta</button>
+        </form>
+      </section>
+      
+      <!-- Section 8 – Icon URL Management (REMOVED FROM FRONT END) --><!-- The configuration is now handled exclusively in the <script> block at the top. -->
+    </div>
+    
+    <!-- Promise Page (Hidden by default) -->
+    <!-- The internal content wrapper uses 'max-content-area' -->
+    <section id="promisePage" class="bg-white overflow-y-auto min-h-screen">
+      <div class="max-content-area pt-10 px-6"> 
+        
+        <!-- A. Entry (Hero) --><div class="text-center mb-16">
+          <h1 class="text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-gray-900">Because confusion can be dangerous.</h1>
+          <p class="text-xl lg:text-2xl mb-8 text-gray-700">A message from KLYR — built for people, for health, and for peace of mind.</p>
+          
+          <!-- KLYR Logo (Centered, Electric Red) - Uses KLYR_LOGO_URL set by the script block above --><div class="text-center mt-10">
+              <!-- Added ID for script injection. Initial src is blank/placeholder. --><img 
+                  id="promiseLogoImg"
+                  src="" 
+                  alt="MyKLYR Logo" 
+                  class="mx-auto h-12 w-auto" 
+                  loading="lazy"
+              >
+          </div>
+        </div>
+
+        <!-- B. Main Body (single column, center-aligned, max-width 900 px) --><div class="space-y-8 text-lg text-gray-700 leading-relaxed">
+          <p>
+            KLYR was not created for corporations, brands, or industry icons.
+            It was created for **people**.
+          </p>
+          <p>
+            For the parent who worries about what goes into their child’s hands.
+            For the traveler trying to find what’s theirs in a world of sameness.
+            For the caregiver double-checking a medicine label in the middle of the night.
+            For every person who deserves to feel safe, informed, and in control.
+          </p>
+          <p>
+            We see **confusion** for what it truly is — not a small inconvenience, but a daily human risk.
+            It wastes food that could have been shared, spreads illness that could have been avoided,
+            and turns simple moments into stress and doubt.
+            It creates arguments at home, accidents in public, and loss in silence.
+            Confusion doesn't just waste goods — it wears down trust.
+          </p>
+          <p class="text-xl font-semibold text-gray-800">
+            KLYR exists to bring that trust back.
+            We are not a company driven by competition; we are a commitment to **care**.
+          </p>
+          <p>
+            We believe clarity saves lives, restores confidence, and protects families.
+            We build technology not to complicate, but to calm.
+            Not to own information, but to empower the person holding the product.
+          </p>
+          <p>
+            Our mission is to stop confusion before it becomes harm —
+            to protect your health, your home, your loved ones, and your peace of mind.
+            From the dinner table to the pharmacy counter,
+            from shared spaces to hospitals and homes,
+            KLYR is here to see clearly when clarity matters most.
+          </p>
+          <p>
+            We build with compassion, not control.
+            We design with empathy, not ego.
+            Because every act of clarity — every verified product, every prevented mix-up —
+            is an act of care for someone’s life, someone’s family, someone’s tomorrow.
+          </p>
+        </div>
+
+        <!-- C. Signature Block (end section) --><div class="text-center mt-16 pt-8 border-t border-gray-200 space-y-6">
+          <p class="text-xl font-medium text-gray-800">
+            KLYR™ — Because confusion can be dangerous, and peace of mind is worth protecting.
+          </p>
+          <!-- CTA (outlined in electric red) --><a id="promiseReturnBtn" href="#section2" class="inline-block border-2 border-[#E50914] text-[#E50914] px-8 py-3 rounded-xl text-lg font-semibold hover:bg-[#E50914] hover:text-white transition duration-300">
+            Discover How KLYR Works →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Thank You Page (Hidden by default) -->
+    <!-- Content is already well-constrained by text-center and max-w-xl -->
+    <section id="thankyouPage" class="bg-black text-white flex flex-col items-center justify-center text-center p-6 min-h-screen">
+      <h2 class="text-4xl font-bold mb-4">Thank You for Joining the KLYR™ Beta</h2>
+      <p class="mb-4 max-w-xl">You’ll be among the first to receive updates and early access when the app launches.<br>We’re excited to have you join the clarity revolution.<br>– The KLYR™ Team</p>
+      <button id="returnBtn" class="bg-[#E50914] hover:bg-[#b50710] px-8 py-4 rounded-2xl text-lg font-semibold transition duration-300">Return</button>
+    </section>
+
+  </div> <!-- End Global Wrapper for Max Width -->
+  
+  <!-- Footer (Non-Fixed Footer - Always 100% width) --><footer class="w-full bg-white text-black py-8 px-6 border-t-4 border-[#E50914] mt-8 text-center">
+      <!-- Content is now centered using the text-center class on the footer --><div class="max-w-7xl mx-auto space-y-2">
+          
+          <!-- Brand & Copyright --><p class="text-xs sm:text-sm font-semibold text-black">
+            KLYR™ | Clarity Technology by Plus Brand Industries
+          </p>
+          <p class="text-xs text-black mb-4">
+            &copy; 2025 Plus Brand Industries, Inc. All Rights Reserved.
+          </p>
+
+          <!-- Policy Links --><div class="text-sm space-x-4 text-black">
+            <a href="javascript:void(0);" class="hover:text-[#E50914] transition duration-200">[Privacy Policy]</a>
+            <a href="javascript:void(0);" class="hover:text-[#E50914] transition duration-200">[Terms]</a>
+            <a href="javascript:void(0);" class="hover:text-[#E50914] transition duration-200">[Contact]</a>
+          </div>
+      </div>
+  </footer>
+
+  <script>
+    // Moved general script functions below the main content for better organization
+
+    const form = document.getElementById('betaForm');
+    const thankyouPage = document.getElementById('thankyouPage');
+    const promisePage = document.getElementById('promisePage');
+    const mainContentContainer = document.getElementById('mainContent');
+    const navPromiseBtn = document.getElementById('navPromiseBtn');
+    const heroPromiseBtn = document.getElementById('heroPromiseBtn');
+    const missionPromiseBtn = document.getElementById('missionPromiseBtn');
+    const promiseReturnBtn = document.getElementById('promiseReturnBtn');
+    const returnBtn = document.getElementById('returnBtn');
+    const navLogoBtn = document.getElementById('navLogoBtn'); 
+    
+    // --- Core Page Switching Functions ---
+    
+    // Function to hide all content containers
+    function hideAllContent() {
+        mainContentContainer.style.display = 'none';
+        promisePage.style.display = 'none';
+        thankyouPage.style.display = 'none';
+    }
+
+    // Function to show the main content
+    function showMainContent() {
+        hideAllContent(); // Ensure others are hidden
+        mainContentContainer.style.display = 'block';
+        form.reset();
+        // Scroll to the very top when returning home
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Show the Promise page
+    function showPromisePage() {
+        hideAllContent();
+        promisePage.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+    
+    // Show the Thank You page
+    function showThankYouPage() {
+        hideAllContent();
+        // Set display to flex to center content within the min-h-screen container
+        thankyouPage.style.display = 'flex';
+        window.scrollTo(0, 0);
+    }
+
+
+    // --- Event Listeners ---
+
+    // 1. Logo Click listener (returns to the top of the main content)
+    navLogoBtn.addEventListener('click', showMainContent);
+
+    // 2. Show Promise Page listeners
+    navPromiseBtn.addEventListener('click', showPromisePage);
+    heroPromiseBtn.addEventListener('click', showPromisePage);
+    // Add listener for the mission section link
+    missionPromiseBtn.addEventListener('click', showPromisePage);
+
+    // 3. Return from Promise Page listener (clicking the CTA)
+    promiseReturnBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      showMainContent();
+      // Smooth scroll to #section2 after showing the main content
+      const targetSection = document.getElementById('section2');
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // 4. Form Submit listener (to show Thank You page)
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      showThankYouPage();
+    });
+
+    // 5. Return from Thank You page listener
+    returnBtn.addEventListener('click', showMainContent);
+    
+    // Initial load: show the main content if not already handled by DOMContentLoaded script above
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ensure initial content display is correct if the URL setting script above hasn't triggered it
+        if (mainContentContainer.style.display === 'none' && 
+            promisePage.style.display === 'none' && 
+            thankyouPage.style.display === 'none') {
+            showMainContent();
+        }
+    });
+
+  </script>
+
+</body>
+</html>
