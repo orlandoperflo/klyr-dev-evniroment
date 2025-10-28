@@ -1,498 +1,577 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyKLYR™ | A New Era of Clarity – Because Confusion Can Be Dangerous</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Custom styles for animations and scrolling */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    .animate-pulse { animation: pulse 6s infinite; }
-    .horizontal-scroll { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .horizontal-scroll::-webkit-scrollbar { display: none; }
-    
-    /* Pages that load instantly and cover the screen */
-    #thankyouPage { display: none; }
-    #promisePage { display: none; }
-    
-    /* Ensure body uses the font */
-    body {
-        font-family: 'Inter', sans-serif;
-    }
-
-    /* New: Class for defining the maximum content width for the main body sections */
-    .max-content-area {
-        max-width: var(--max-site-width, 1280px); /* Use CSS variable, default to 1280px */
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    /* Style for the new icon input control panel (now removed, keeping for reference) */
-    .icon-control-card {
-        padding: 1rem;
-        border-radius: 0.75rem;
-        background-color: #f3f4f6; /* bg-gray-100 */
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
-    }
-    .icon-control-input {
-        padding: 0.5rem;
-        border: 1px solid #d1d5db; /* border-gray-300 */
-        border-radius: 0.5rem;
-        width: 100%;
-        font-size: 0.875rem;
-    }
-  </style>
-  <!-- Load Inter font --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body class="font-sans text-gray-900">
-
-  <!-- ============================================== --><!-- CENTRAL LOGO AND ICON CONFIGURATION (USER ADJUSTABLE) --><!-- ============================================== --><script>
-    // --- WEBSITE WIDTH CONTROL (User Defined) ---
-    // Set the maximum content width for all main sections (excluding Nav and Footer)
-    const MAX_CONTENT_WIDTH_PX = '1500px'; 
-
-    // --- USER CONTROLLED LOGO URL ---
-    // Change this variable to update the logo image across the site.
-    const KLYR_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png';
-
-    // --- USER CONTROLLED ICON URLS (EDIT THESE VALUES TO CHANGE THE ICONS) ---
-    const ICON_CONFIG = [
-      { id: 'iconHealthSafety', title: 'Health & Safety', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_User.png' },
-      { id: 'iconFoodBeverage', title: 'Food & Beverage', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Food.png' },
-      { id: 'iconRetailPackaging', title: 'Retail & Packaging', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Retail.png' },
-      { id: 'iconTechEarly', title: 'Tech Early Adopters', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Tech.png' },
-      { id: 'iconSustainability', title: 'Sustainability', defaultUrl: 'https://plusbrand.com/wp-content/uploads/2025/10/Logos_KLYR_App_Sustainability.png' },
-    ];
-    
-    // Fallback URLs for error handling
-    const LOGO_PLACEHOLDER = 'https://placehold.co/120x30/E50914/ffffff?text=KLYR+Logo';
-    const ICON_ERROR_PLACEHOLDER = 'https://placehold.co/64x64/6B7280/ffffff?text=IMG+Error';
-
-    // Function to apply the URL and error handler for a single image element
-    const applyImage = (elementId, url, fallback) => {
-        const imgElement = document.getElementById(elementId);
-        if (imgElement) {
-            imgElement.setAttribute('data-icon-id', elementId); 
-            imgElement.src = url;
-            imgElement.onerror = function() {
-                this.onerror = null; // Prevent infinite loop on failed fallback
-                this.src = fallback;
-            };
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLYR - Confusion Costs Lives</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome (for social media, globe, menu, and exit icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'klyr-red': '#E72F3C',
+                        'klyr-dark': '#1F2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
         }
-    };
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      // Set the CSS variable for max width, making the 'max-content-area' class functional
-      document.documentElement.style.setProperty('--max-site-width', MAX_CONTENT_WIDTH_PX);
+    </script>
+    <style>
+        /* ===================================================================
+        USER EDITABLE: GLOBAL WEBSITE MAX WIDTH VARIABLES
+        =================================================================== */
+        :root {
+            /* Max width for the primary content sections */
+            --site-max-width: 1100px; 
+            /* Max width for header/footer sections (wider) */
+            --nav-footer-max-width: 2000px; 
 
-      // 1. Initialize Logos
-      applyImage('navLogoImg', KLYR_LOGO_URL, LOGO_PLACEHOLDER);
-      applyImage('promiseLogoImg', KLYR_LOGO_URL, LOGO_PLACEHOLDER);
+            /* ===============================================================
+            USER EDITABLE: CRISIS CARD STYLING VARIABLES
+            =============================================================== */
+            --card-bg-color: #f9f9f9; 
+            --card-shadow: 0 0px 0px rgba(0, 0, 0, 0.08);
 
-      // 2. Initialize Icons from ICON_CONFIG
-      ICON_CONFIG.forEach(config => {
-        applyImage(config.id, config.defaultUrl, ICON_ERROR_PLACEHOLDER);
-      });
-      
-      // Removed the input listeners as the front-end control panel is now gone.
-    });
-  </script>
-  
-  <!-- Navigation Menu (Minimalistic and Sticky) --><nav class="sticky top-0 z-[70] bg-white p-4 flex justify-between items-center border-b border-gray-100">
-    <!-- Logo/Brand (Left) - Uses KLYR_LOGO_URL set by the script block above --><a id="navLogoBtn" href="javascript:void(0);" class="flex items-center">
-        <!-- Added ID for script injection. Initial src is blank/placeholder. --><img 
-            id="navLogoImg"
-            src="" 
-            alt="MyKLYR Logo" 
-            class="h-6 w-auto" 
-            loading="lazy"
-        >
-    </a>
-    
-    <!-- Nav Link (Right) --><div class="flex items-center space-x-4">
-        <!-- Added ID for JavaScript targeting --><a id="navPromiseBtn" href="javascript:void(0);" class="text-gray-700 hover:text-[#E50914] font-medium text-lg transition duration-150">Our Promise</a>
-    </div>
-  </nav>
+            /* ===============================================================
+            USER EDITABLE: LOGO BORDER STYLING VARIABLE (Applied to Hero Logo)
+            =============================================================== */
+            /* Format: <size> <style> <color> (e.g., 20px solid #E72F3C) */
+            --logo-border-style: 20px solid var(--klyr-red);
 
-  <!-- Global Wrapper for Max Width (Content and Pages) -->
-  <div class="w-full">
+            /* ===============================================================
+            USER EDITABLE: CONTENT BOX BORDER THICKNESS (SIZE)
+            =============================================================== */
+            /* Control border size for the large logo box (e.g., 2px, 8px, 20px) */
+            --box-border-thickness: 4px; 
+        }
+        .border-red-200 {
+    --tw-border-opacity: 1!important;
+    border-color: red!important;
+}
 
-    <!-- Main Content Container (Hidden when Promise or Thank You page is active) -->
-    <!-- Applied 'max-content-area' to constrain and center all main sections -->
-    <div id="mainContent" class="min-h-screen max-content-area">
-      <!-- Header / Hero --><section class="relative pt-20 min-h-screen bg-white flex flex-col items-center justify-center text-center overflow-hidden">
-        <div class="relative z-10 p-6">
-          <h1 class="text-5xl font-extrabold mb-4 tracking-tight">Because confusion can be dangerous.</h1>
-          <p class="text-lg mb-8 opacity-80 text-gray-800">Clarity technology built for people — for their health, safety, and peace of mind.</p>
-          <!-- Added ID for JavaScript targeting --><a id="heroPromiseBtn" href="javascript:void(0);" class="bg-[#E50914] hover:bg-[#b50710] text-white px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300">Read Our Promise</a>
-        </div>
-      </section>
+.border-2 {
+    border-width: 3px!important;
+}
 
-      <!-- Section 2 – What Is KLYR --><section id="section2" class="bg-white py-20 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-4xl font-bold mb-4">Clarity Starts Here.</h2>
-          <p class="text-lg leading-relaxed text-gray-700">
-            MyKLYR™ is a next-generation identification technology designed to eliminate confusion in everyday life — from beverages and food to medicine, personal care, and consumer electronics. Using advanced visual recognition, AI learning, and digital fingerprinting, KLYR™ allows users to identify, verify, and track authenticity and ownership in seconds.
-          </p>
-        </div>
-        <div class="relative w-full h-80 bg-gray-100 rounded-2xl shadow-inner flex items-center justify-center">
-          <span class="text-gray-500 font-semibold text-xl">🔍 Scanning Animation</span>
-        </div>
-      </section>
+        /* Custom class for standard content width */
+        .max-w-site {
+            max-width: var(--site-max-width);
+        }
 
-      <!-- Section 3 – What Makes KLYR Different --><section class=" py-20 px-6 lg:px-20 text-center">
-        <h2 class="text-4xl font-bold mb-10">What Makes KLYR™ Different</h2>
-        <div class="horizontal-scroll gap-6 pb-4">
-          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
-            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">AI Visual Recognition</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Detects product identity and authenticity by shape and surface pattern.</p>
-          </div>
-          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
-            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Digital Fingerprint Technology</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Each product has a unique visual code — no barcode needed.</p>
-          </div>
-          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
-            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Health & Safety Focused</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Protects families from dangerous mix-ups.</p>
-          </div>
-          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
-            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Sustainability Advantage</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Reduces waste by helping you trust what’s already safe.</p>
-          </div>
-          <div class="w-64 p-6 bg-white rounded-2xl transition-shadow duration-300 flex-shrink-0">
-            <h3 class="font-semibold text-xl mb-2 text-[#E50914]">Universal Application</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Works across beverages, medicine, food, and more.</p>
-          </div>
-        </div>
-      </section>
+        /* Custom class for header and footer content width */
+        .max-w-super-wide {
+            max-width: var(--nav-footer-max-width);
+        }
 
-      <!-- Section 4 – Our Mission --><section class="bg-white text-black py-20 px-6 text-center">
-        <h2 class="text-4xl font-bold mb-4">Our Mission – A New Era of Clarity</h2>
-        <p class="text-lg max-w-3xl mx-auto opacity-80">We weren’t built for corporations. We were built for people.
-        For the parent who worries what goes into their child’s hands.
-        For the traveler trying to find what’s theirs in a world of sameness.
-        For the caregiver double-checking a medicine label in the middle of the night. <br><br>
-        <!-- Link to the Promise Page --><a id="missionPromiseBtn" href="javascript:void(0);" class="text-[#E50914] hover:text-[#b50710] font-semibold underline transition duration-150">Read the full KLYR Promise</a>
-        </p>
-      </section>
+        /* Custom class applying background and shadow variables to the crisis cards */
+        .crisis-card-style {
+            background-color: var(--card-bg-color);
+            box-shadow: var(--card-shadow);
+        }
 
-      <!-- Section 5 – Beta Program Invitation --><section class="bg-white py-20 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-4xl font-bold mb-4">Join the KLYR™ Beta Program</h2>
-          <p class="text-lg text-gray-700 mb-6">We’re opening registration for early testers who want to be among the first to experience KLYR™.</p>
-          <ul class="text-gray-700 space-y-2 list-disc list-inside">
-            <li>Early access to the KLYR™ mobile app (iOS + Android)</li>
-            <li>Exclusive updates and feature previews</li>
-            <li>Recognition as an early contributor in the clarity revolution</li>
-          </ul>
-        </div>
-        <div class="relative w-full h-80 bg-gradient-to-tr from-gray-200 to-gray-100 rounded-2xl shadow-inner flex items-center justify-center">
-          <span class="text-gray-500 font-semibold text-xl">📱 Smartphone Scanning Mock</span>
-        </div>
-      </section>
-
-      <!-- Section 6 – Who Should Apply (Lists are centered here) --><section class="bg-gray-50 py-20 px-6 lg:px-20 text-center">
-        <h2 class="text-4xl font-bold mb-12">WHO SHOULD APPLY TO BECOME A KLYR™ BETA TESTER
-        </h2>
-        <p class="text-lg text-gray-700 mb-6">KLYR™ is launching a *New Era of Clarity* — an AI-powered system that eliminates consumer confusion to protect health, reduce waste, and restore trust in everyday life.  
-        We’re inviting thoughtful people and professionals to help us shape this breakthrough technology before public release.
-        </p>
-        <div class="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
-          <!-- Item 1: Health & Safety Conscious Users --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
-            <!-- Dynamic Icon: ID='iconHealthSafety' --><img id="iconHealthSafety" src="" alt="Health & Safety Icon" class="w-16 h-16 object-cover rounded-full mb-4">
-            <p class="text-gray-700 font-medium">Health & Safety Conscious Users</p>
-            <p class="text-gray-700 text-sm leading-relaxed">People who care about protecting themselves and their families.  
-            Ideal Testers: Parents, healthcare advocates, wellness-minded consumers.  
-            Why Join: Your feedback will help KLYR™ perfect its scanning accuracy for products that impact health and safety.
-            </p>
-          </div>
-          <!-- Item 2: Food & Beverage Professionals --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
-            <!-- Dynamic Icon: ID='iconFoodBeverage' --><img id="iconFoodBeverage" src="" alt="Food & Beverage Icon" class="w-16 h-16 object-cover rounded-full mb-4">
-            <p class="text-gray-700 font-medium">Food & Beverage Professionals</p>
-            <p class="text-gray-700 text-sm leading-relaxed">Chefs, mixologists, food-service operators, and brand managers.  
-            Ideal Testers: Restaurant and bar professionals, QA and food-safety teams.  
-            Why Join: You’ll help test real-world scanning for freshness, cross-contamination, and brand integrity.
-
-            </p>
-          </div>
-          <!-- Item 3: Retail & Packaging Innovators --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
-            <!-- Dynamic Icon: ID='iconRetailPackaging' --><img id="iconRetailPackaging" src="" alt="Retail & Packaging Icon" class="w-16 h-16 object-cover rounded-full mb-4">
-            <p class="text-gray-700 font-medium">Retail & Packaging Innovators</p>
-            <p class="text-gray-700 text-sm leading-relaxed">Designers, engineers, and creators shaping how products reach consumers.  
-            Ideal Testers: Product designers, brand managers, e-commerce specialists.  
-            Why Join: Your insights will ensure KLYR™ integrates seamlessly with packaging and retail environments.
-            </p>
-          </div>
-          <!-- Item 4: Tech Early Adopters --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
-            <!-- Dynamic Icon: ID='iconTechEarly' --><img id="iconTechEarly" src="" alt="Tech Early Adopters Icon" class="w-16 h-16 object-cover rounded-full mb-4">
-            <p class="text-gray-700 font-medium">Tech Early Adopters</p>
-            <p class="text-gray-700 text-sm leading-relaxed">The innovators who love being first to try what’s next.  
-            Ideal Testers: App developers, AI enthusiasts, UX testers, smart-device users.  
-            Why Join: You’ll stress-test KLYR™’s AI recognition and interface in diverse lighting, product, and device conditions.
-            </p>
-          </div>
-          <!-- Item 5: Sustainability Advocates --><div class="flex flex-col items-center bg-white rounded-3xl p-8 transition-shadow duration-300 w-64">
-            <!-- Dynamic Icon: ID='iconSustainability' --><img id="iconSustainability" src="" alt="Sustainability Icon" class="w-16 h-16 object-cover rounded-full mb-4">
-            <p class="text-gray-700 font-medium">Sustainability Advocates</p>
-            <p class="text-gray-700 text-sm leading-relaxed">Those committed to reducing waste and promoting environmental clarity.  
-            Ideal Testers: Eco-conscious consumers, recycling advocates, sustainability professionals.  
-            Why Join: You’ll explore how KLYR™ helps reduce waste by verifying safety and freshness before disposal.
-            </p>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 mt-6">General Requirements
-        </p>
-        <!-- Centered List 1: General Requirements --><div class="flex justify-center">
-        <ul class="list-disc space-y-1 text-left max-w-md">
-          <li>Comfortable using a smartphone camera regularly.  
-        </li>
-          <li>
-            Willing to complete short in-app feedback surveys.
-          </li>
-          <li>
-             Access to a variety of products (home, food, medicine, etc.).
-          </li>
-          <li>
-            Passionate about safety, sustainability, and innovation.
-          </li>
-        </ul> </div>
-        <p class="text-sm text-gray-500 mt-6"> Beta Tester Benefit
-        </p>
-        <!-- Centered List 2: Beta Tester Benefit --><div class="flex justify-center">
-        <ul class="list-disc space-y-1 text-left max-w-md">
-          <li>Early Access to the KLYR™ app before public release.  
-        </li>
-          <li>
-           Exclusive Updates on new features and AI developments.
-          </li>
-          <li>
-             Recognition as a Founding Beta Member (optional)
-          </li>
-          <li>
-            Direct Impact: Your input helps build a technology that protects people and the planet.
-          </li>
-        </ul> </div>
-      </section>
-
-      <!-- Section 7 – Registration Form --><section id="registration" class="bg-white py-20 px-6 lg:px-20 text-center">
-        <h2 class="text-4xl font-bold mb-6">Join the Beta Below</h2>
-        <form id="betaForm" class="max-w-xl mx-auto space-y-4 text-left">
-          <input type="text" name="fullname" placeholder="Full Name" required class="w-full p-3 border border-gray-300 rounded-xl" />
-          <input type="email" name="email" placeholder="Email Address" required class="w-full p-3 border border-gray-300 rounded-xl" />
-          <select name="country" class="w-full p-3 border border-gray-300 rounded-xl">
-            <option value="">Country / Region</option>
-            <option>United States</option>
-            <option>Mexico</option>
-            <option>Canada</option>
-          </select>
-          <div class="flex items-center gap-4">
-            <label class="flex items-center gap-2"><input type="radio" name="device" value="iOS" required /> iOS</label>
-            <label class="flex items-center gap-2"><input type="radio" name="device" value="Android" required /> Android</label>
-          </div>
-          <textarea name="comment" placeholder="How do you think KLYR™ could help you? (optional)" class="w-full p-3 border border-gray-300 rounded-xl"></textarea>
-          <label class="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" name="agree" required /> I agree to receive beta updates and product information from Plus Brand Industries, Inc.</label>
-          <button type="submit" class="bg-[#E50914] hover:bg-[#b50710] text-white px-8 py-4 rounded-2xl text-lg font-semibold w-full transition duration-300">Join the KLYR™ Beta</button>
-        </form>
-      </section>
-      
-      <!-- Section 8 – Icon URL Management (REMOVED FROM FRONT END) --><!-- The configuration is now handled exclusively in the <script> block at the top. -->
-    </div>
-    
-    <!-- Promise Page (Hidden by default) -->
-    <!-- The internal content wrapper uses 'max-content-area' -->
-    <section id="promisePage" class="bg-white overflow-y-auto min-h-screen">
-      <div class="max-content-area pt-10 px-6"> 
+        /* Custom class for the content logo border */
+        .content-logo-border {
+            border: var(--logo-border-style) !important;
+        }
         
-        <!-- A. Entry (Hero) --><div class="text-center mb-16">
-          <h1 class="text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-gray-900">Because confusion can be dangerous.</h1>
-          <p class="text-xl lg:text-2xl mb-8 text-gray-700">A message from KLYR — built for people, for health, and for peace of mind.</p>
-          
-          <!-- KLYR Logo (Centered, Electric Red) - Uses KLYR_LOGO_URL set by the script block above --><div class="text-center mt-10">
-              <!-- Added ID for script injection. Initial src is blank/placeholder. --><img 
-                  id="promiseLogoImg"
-                  src="" 
-                  alt="MyKLYR Logo" 
-                  class="mx-auto h-12 w-auto" 
-                  loading="lazy"
-              >
-          </div>
-        </div>
-
-        <!-- B. Main Body (single column, center-aligned, max-width 900 px) --><div class="space-y-8 text-lg text-gray-700 leading-relaxed">
-          <p>
-            KLYR was not created for corporations, brands, or industry icons.
-            It was created for **people**.
-          </p>
-          <p>
-            For the parent who worries about what goes into their child’s hands.
-            For the traveler trying to find what’s theirs in a world of sameness.
-            For the caregiver double-checking a medicine label in the middle of the night.
-            For every person who deserves to feel safe, informed, and in control.
-          </p>
-          <p>
-            We see **confusion** for what it truly is — not a small inconvenience, but a daily human risk.
-            It wastes food that could have been shared, spreads illness that could have been avoided,
-            and turns simple moments into stress and doubt.
-            It creates arguments at home, accidents in public, and loss in silence.
-            Confusion doesn't just waste goods — it wears down trust.
-          </p>
-          <p class="text-xl font-semibold text-gray-800">
-            KLYR exists to bring that trust back.
-            We are not a company driven by competition; we are a commitment to **care**.
-          </p>
-          <p>
-            We believe clarity saves lives, restores confidence, and protects families.
-            We build technology not to complicate, but to calm.
-            Not to own information, but to empower the person holding the product.
-          </p>
-          <p>
-            Our mission is to stop confusion before it becomes harm —
-            to protect your health, your home, your loved ones, and your peace of mind.
-            From the dinner table to the pharmacy counter,
-            from shared spaces to hospitals and homes,
-            KLYR is here to see clearly when clarity matters most.
-          </p>
-          <p>
-            We build with compassion, not control.
-            We design with empathy, not ego.
-            Because every act of clarity — every verified product, every prevented mix-up —
-            is an act of care for someone’s life, someone’s family, someone’s tomorrow.
-          </p>
-        </div>
-
-        <!-- C. Signature Block (end section) --><div class="text-center mt-16 pt-8 border-t border-gray-200 space-y-6">
-          <p class="text-xl font-medium text-gray-800">
-            KLYR™ — Because confusion can be dangerous, and peace of mind is worth protecting.
-          </p>
-          <!-- CTA (outlined in electric red) --><a id="promiseReturnBtn" href="#section2" class="inline-block border-2 border-[#E50914] text-[#E50914] px-8 py-3 rounded-xl text-lg font-semibold hover:bg-[#E50914] hover:text-white transition duration-300">
-            Discover How KLYR Works →
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Thank You Page (Hidden by default) -->
-    <!-- Content is already well-constrained by text-center and max-w-xl -->
-    <section id="thankyouPage" class="bg-black text-white flex flex-col items-center justify-center text-center p-6 min-h-screen">
-      <h2 class="text-4xl font-bold mb-4">Thank You for Joining the KLYR™ Beta</h2>
-      <p class="mb-4 max-w-xl">You’ll be among the first to receive updates and early access when the app launches.<br>We’re excited to have you join the clarity revolution.<br>– The KLYR™ Team</p>
-      <button id="returnBtn" class="bg-[#E50914] hover:bg-[#b50710] px-8 py-4 rounded-2xl text-lg font-semibold transition duration-300">Return</button>
-    </section>
-
-  </div> <!-- End Global Wrapper for Max Width -->
-  
-  <!-- Footer (Non-Fixed Footer - Always 100% width) --><footer class="w-full bg-white text-black py-8 px-6 border-t-4 border-[#E50914] mt-8 text-center">
-      <!-- Content is now centered using the text-center class on the footer --><div class="max-w-7xl mx-auto space-y-2">
-          
-          <!-- Brand & Copyright --><p class="text-xs sm:text-sm font-semibold text-black">
-            KLYR™ | Clarity Technology by Plus Brand Industries
-          </p>
-          <p class="text-xs text-black mb-4">
-            &copy; 2025 Plus Brand Industries, Inc. All Rights Reserved.
-          </p>
-
-          <!-- Policy Links --><div class="text-sm space-x-4 text-black">
-            <a href="javascript:void(0);" class="hover:text-[#E50914] transition duration-200">[Privacy Policy]</a>
-            <a href="javascript:void(0);" class="hover:text-[#E50914] transition duration-200">[Terms]</a>
-            <a href="javascript:void(0);" class="hover:text-[#E50914] transition duration-200">[Contact]</a>
-          </div>
-      </div>
-  </footer>
-
-  <script>
-    // Moved general script functions below the main content for better organization
-
-    const form = document.getElementById('betaForm');
-    const thankyouPage = document.getElementById('thankyouPage');
-    const promisePage = document.getElementById('promisePage');
-    const mainContentContainer = document.getElementById('mainContent');
-    const navPromiseBtn = document.getElementById('navPromiseBtn');
-    const heroPromiseBtn = document.getElementById('heroPromiseBtn');
-    const missionPromiseBtn = document.getElementById('missionPromiseBtn');
-    const promiseReturnBtn = document.getElementById('promiseReturnBtn');
-    const returnBtn = document.getElementById('returnBtn');
-    const navLogoBtn = document.getElementById('navLogoBtn'); 
-    
-    // --- Core Page Switching Functions ---
-    
-    // Function to hide all content containers
-    function hideAllContent() {
-        mainContentContainer.style.display = 'none';
-        promisePage.style.display = 'none';
-        thankyouPage.style.display = 'none';
-    }
-
-    // Function to show the main content
-    function showMainContent() {
-        hideAllContent(); // Ensure others are hidden
-        mainContentContainer.style.display = 'block';
-        form.reset();
-        // Scroll to the very top when returning home
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Show the Promise page
-    function showPromisePage() {
-        hideAllContent();
-        promisePage.style.display = 'block';
-        window.scrollTo(0, 0);
-    }
-    
-    // Show the Thank You page
-    function showThankYouPage() {
-        hideAllContent();
-        // Set display to flex to center content within the min-h-screen container
-        thankyouPage.style.display = 'flex';
-        window.scrollTo(0, 0);
-    }
-
-
-    // --- Event Listeners ---
-
-    // 1. Logo Click listener (returns to the top of the main content)
-    navLogoBtn.addEventListener('click', showMainContent);
-
-    // 2. Show Promise Page listeners
-    navPromiseBtn.addEventListener('click', showPromisePage);
-    heroPromiseBtn.addEventListener('click', showPromisePage);
-    // Add listener for the mission section link
-    missionPromiseBtn.addEventListener('click', showPromisePage);
-
-    // 3. Return from Promise Page listener (clicking the CTA)
-    promiseReturnBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      showMainContent();
-      // Smooth scroll to #section2 after showing the main content
-      const targetSection = document.getElementById('section2');
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-
-    // 4. Form Submit listener (to show Thank You page)
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      showThankYouPage();
-    });
-
-    // 5. Return from Thank You page listener
-    returnBtn.addEventListener('click', showMainContent);
-    
-    // Initial load: show the main content if not already handled by DOMContentLoaded script above
-    document.addEventListener('DOMContentLoaded', () => {
-        // Ensure initial content display is correct if the URL setting script above hasn't triggered it
-        if (mainContentContainer.style.display === 'none' && 
-            promisePage.style.display === 'none' && 
-            thankyouPage.style.display === 'none') {
-            showMainContent();
+        /* Custom class for the Content Box border style using the new variable */
+        #content-box.content-box-border-style {
+            /* Targeting the ID and class together for maximum specificity */
+            border: var(--box-border-thickness) solid var(--klyr-red) !important;
         }
-    });
 
-  </script>
+        /* Modal specific styling to handle transitions */
+        .modal-transition {
+            transition: opacity 300ms ease-out, transform 300ms ease-out;
+        }
+
+        /* Ensuring Inter font loads smoothly */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="text-klyr-dark">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <img id="nav-logo-img" class="h-6 w-auto" alt="KLYR™ Logo" onerror="this.outerHTML = '<span class=\'text-xl font-bold text-klyr-red\'>KLYR™</span>';">
+                </div>
+                
+                <!-- Right side: Global Icon (Desktop), Desktop Nav, and Mobile Button -->
+                <div class="flex items-center space-x-4">
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                        <a href="#" class="hover:text-klyr-red transition duration-150">THE SOLUTION</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">COST OF CONFUSION</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">CASE STUDIES</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">TECHNOLOGY</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">IMPACT</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">PRESS</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150 font-semibold">JOIN THE MOVEMENT</a>
+                    </nav>
+
+                    <!-- Global Icon - Triggers the country modal (Visible ONLY on Desktop) -->
+                    <i id="global-icon-desktop" class="fas fa-globe text-gray-500 hover:text-klyr-red cursor-pointer transition md:ml-4 hidden md:block"></i>
+
+                    <!-- Mobile Menu Button (Hamburger) -->
+                    <button id="mobile-menu-btn" type="button" class="md:hidden text-gray-500 hover:text-klyr-red p-2 rounded-md focus:outline-none -mr-2">
+                        <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Container (Sidebar Slide-out Panel) -->
+    <!-- Initial state: translate-x-full (off screen) -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-[90] transform translate-x-full transition-transform duration-300 md:hidden">
+        <!-- Header area for the mobile menu, only containing the close button -->
+        <div class="flex justify-end items-center h-16 border-b border-gray-100 px-6">
+            <!-- Close Button for Mobile Menu -->
+            <button id="mobile-close-btn" type="button" class="text-gray-500 hover:text-klyr-red p-2 rounded-md focus:outline-none">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <nav class="py-4 space-y-1 px-6">
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">THE SOLUTION</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">COST OF CONFUSION</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">CASE STUDIES</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">TECHNOLOGY</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">IMPACT</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">PRESS</a>
+            <a href="#" class="block text-base font-semibold text-klyr-red hover:text-klyr-red py-3 border-b border-gray-100">JOIN THE MOVEMENT</a>
+            
+            <!-- NEW MOBILE GLOBE LINK (Triggers the modal) -->
+            <a id="global-link-mobile" href="#" class="flex items-center space-x-3 block text-base font-medium text-klyr-dark hover:text-klyr-red py-3">
+                <i class="fas fa-globe text-lg"></i>
+                <span>Select Region / Language</span>
+            </a>
+        </nav>
+    </div>
+    <!-- The gray overlay element is removed -->
+
+    <main>
+        <!-- Section 1: Hero - Confusion Costs Lives -->
+        <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-6">
+                    <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-snug">
+                        <span class="text-klyr-dark">CONFUSION</span>
+                        <br class="hidden sm:block">
+                        <span class="text-klyr-dark">COSTS LIVES.</span>
+                        <br class="hidden sm:block">
+                        <span class="text-klyr-red">KLYR™</span> SAVES LIVES
+                    </h1>
+                    <p class="text-gray-600 text-lg">
+                        Every day, across every continent, confusion destroys value, quality, and human life. It's not counterfeiting—it's misidentification, relabeling, and misunderstanding. The global clarity problem is enormous. Our 100% genuine answer is preventable.
+                    </p>
+                </div>
+                <!-- Right Box -->
+                <div id="content-box" class="content-box-border-style rounded-lg p-8 flex justify-center items-center h-full"> 
+                    <div class="text-center">
+                        <!-- Content Logo -->
+                        <img id="content-logo-img" class="h-20 w-auto mx-auto content-logo-border" alt="KLYR™ Logo" onerror="this.outerHTML = '<span class=\'text-6xl font-extrabold text-klyr-red\'>KLYR™</span>';">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Hidden Global Crisis -->
+        <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-12 text-center">
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+                THE HIDDEN GLOBAL CRISIS
+            </h2>
+            <p class="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+                Confusion is humanity's most expensive mistake. Clarity is our greatest solution.
+            </p>
+        </section>
+
+        <!-- Section 3: Statistics Cards -->
+        <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-24">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Card 1: Food & Beverage -->
+                <div class="rounded-xl crisis-card-style p-6 text-center">
+                    <h3 class="text-sm font-bold text-klyr-dark mb-4">Food & Beverage</h3>
+                    <div class="text-5xl font-extrabold text-klyr-red mb-4">100+</div>
+                    <p class="text-sm text-gray-600">
+                        Hundreds of recalls each year. Billions of units destroyed.
+                    </p>
+                </div>
+
+                <!-- Card 2: Medicine & Healthcare -->
+                <div class="rounded-xl crisis-card-style p-6 text-center">
+                    <h3 class="text-sm font-bold text-klyr-dark mb-4">Medicine & Healthcare</h3>
+                    <div class="text-5xl font-extrabold text-klyr-red mb-4">1.5M+</div>
+                    <p class="text-sm text-gray-600">
+                        Look-alike packaging and dosage errors cause 1.5 million injuries per year in the U.S. alone.
+                    </p>
+                </div>
+
+                <!-- Card 3: Manufacturing & Logistics -->
+                <div class="rounded-xl crisis-card-style p-6 text-center">
+                    <h3 class="text-sm font-bold text-klyr-dark mb-4">Manufacturing & Logistics</h3>
+                    <div class="text-5xl font-extrabold text-klyr-red mb-4">300B+</div>
+                    <p class="text-sm text-gray-600">
+                        Mis-matched production and line swaps waste over $300 billion globally.
+                    </p>
+                </div>
+
+                <!-- Card 4: Environment -->
+                <div class="rounded-xl crisis-card-style p-6 text-center">
+                    <h3 class="text-sm font-bold text-klyr-dark mb-4">Environment</h3>
+                    <div class="text-5xl font-extrabold text-klyr-red mb-4">CO2</div>
+                    <p class="text-sm text-gray-600">
+                        Every destroyed product adds to CO2 emissions and resource depletion.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Red Estimate Banner -->
+        <section class="bg-klyr-red py-10">
+            <div class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+                <p class="text-xl sm:text-2xl mb-1">
+                    Estimated annual global loss: $500 – $700 billion
+                </p>
+                <p class="text-xl sm:text-2xl">
+                    Lives impacted: Millions
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: CTA - Join the Clarity Movement -->
+        <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+                JOIN THE CLARITY MOVEMENT
+            </h2>
+            <p class="text-xl text-gray-700 mb-8">
+                Become one of the first to experience KLYR™ in action
+            </p>
+            <button id="join-beta-btn" class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wider">
+                JOIN THE BETA
+            </button>
+            <!-- Custom Message Box for JS Alert Replacement -->
+            <div id="message-box" class="mt-8 bg-gray-100 border border-gray-300 text-gray-700 p-4 rounded-lg hidden max-w-sm">
+                Thank you for your interest! The beta sign-up page is coming soon.
+            </div>
+        </section>
+    </main>
+
+    <!-- Country Selection Modal -->
+    <div id="country-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] hidden opacity-0 modal-transition">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-4xl p-8 relative transform scale-95 modal-transition">
+            <!-- Close Button (Top Left) -->
+            <button id="close-modal-btn" class="absolute top-6 left-6 text-gray-500 hover:text-klyr-red transition duration-150">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <!-- Multi-column Country List Container -->
+            <div id="country-list-container" class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-4 max-h-[70vh] overflow-y-auto pt-4 pb-2">
+                <!-- Countries will be rendered here by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 pt-12 pb-8">
+        <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Social Icons -->
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-klyr-red transition duration-150"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-klyr-red transition duration-150"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-klyr-red transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
+            </div>
+
+            <!-- Copyright and Trademarks -->
+            <p class="text-sm text-gray-500 mb-2" id="copyright-text">
+                &copy;2025 KLYR Sciences Inc. All rights reserved.
+            </p>
+            <p class="text-xs text-gray-400 mb-6">
+                KLYR™, KLYRSCAN™, KLYRCLOUD™, MYKLYR™, and KLYRCAM™ are trademarks of KLYR Sciences Inc.
+            </p>
+
+            <!-- Policy Links -->
+            <div class="flex justify-center space-x-4 text-xs text-gray-500">
+                <a href="#" class="hover:text-klyr-red transition duration-150">Privacy Policy</a>
+                <span>|</span>
+                <a href="#" class="hover:text-klyr-red transition duration-150">Terms of Use</a>
+                <span>|</span>
+                <a href="#" class="hover:text-klyr-red transition duration-150">Contact Us</a>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">
+                Advancing clarity through technology.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Pure JavaScript for Interaction, Logo Setup, and Mobile Menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const betaBtn = document.getElementById('join-beta-btn');
+            const messageBox = document.getElementById('message-box');
+            
+            // --- Modal Elements ---
+            const countryModal = document.getElementById('country-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const countryListContainer = document.getElementById('country-list-container');
+            const modalContent = document.getElementById('modal-content');
+            
+            // New/Updated Globe Icon Elements
+            const globalIconDesktop = document.getElementById('global-icon-desktop');
+            const globalLinkMobile = document.getElementById('global-link-mobile');
+
+
+            // --- Mobile Menu Elements ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileCloseBtn = document.getElementById('mobile-close-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Select links inside the menu (used to close menu on click)
+            const mobileLinks = mobileMenu.querySelectorAll('a'); 
+
+            // Logo Variable Setup
+            const LOGO_TEXT = 'KLYR™';
+            const LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png';
+
+            // Variable to control the Tailwind classes of the content logo box
+            const CONTENT_BOX_CLASSES = 'border-2 border-red-200 rounded-lg p-8 flex justify-center items-center h-full'; 
+            
+            const navLogoImg = document.getElementById('nav-logo-img');
+            const contentLogoImg = document.getElementById('content-logo-img');
+            const contentBox = document.getElementById('content-box');
+
+            // Apply Content Box Classes
+            if (contentBox) {
+                contentBox.className = CONTENT_BOX_CLASSES;
+            }
+
+            // Populate the Logo in two locations
+            if (navLogoImg) {
+                navLogoImg.src = LOGO_URL;
+                navLogoImg.alt = LOGO_TEXT + ' Logo (Navigation)';
+            }
+            if (contentLogoImg) {
+                contentLogoImg.src = LOGO_URL;
+                contentLogoImg.alt = LOGO_TEXT + ' Logo (Content Box)';
+            }
+            
+            // --- Helper Functions ---
+
+            // Custom alert message function (since we can't use alert())
+            function alertMessage(message) {
+                const msgBox = document.getElementById('message-box');
+                if (msgBox) {
+                    msgBox.textContent = message;
+                    msgBox.classList.remove('hidden');
+                    // Reset text back to default after delay
+                    setTimeout(() => {
+                        msgBox.classList.add('hidden');
+                        msgBox.textContent = "Thank you for your interest! The beta sign-up page is coming soon."; 
+                    }, 3000);
+                }
+            }
+
+            // --- Mobile Menu Logic ---
+            function toggleMobileMenu() {
+                const isOpen = !mobileMenu.classList.contains('translate-x-full');
+                
+                // Toggle the mobile menu panel
+                mobileMenu.classList.toggle('translate-x-full', isOpen);
+                
+                // Toggle body scroll lock (lock scroll when menu is open)
+                document.body.classList.toggle('overflow-hidden', isOpen);
+            }
+
+            // Event Listeners for mobile menu
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            }
+            if (mobileCloseBtn) {
+                mobileCloseBtn.addEventListener('click', toggleMobileMenu);
+            }
+
+            // Close mobile menu if any link inside it is clicked (unless it's the global link, which will be handled by openModal)
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Check if the menu is currently open before closing
+                    // We don't need this check if openModal handles the closure
+                    if (link.id !== 'global-link-mobile' && !mobileMenu.classList.contains('translate-x-full')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+
+            // --- Country Modal Logic (Existing) ---
+
+            const countries = [
+                { name: "Global", sub: "", isGlobal: true },
+                { name: "Argentina", sub: "" },
+                { name: "Australia & New Zealand", sub: "" },
+                { name: "Belgium", sub: "" },
+                { name: "Brazil", sub: "Brasil" },
+                { name: "Canada", sub: "(English)" },
+                { name: "Canada", sub: "Le Canada (Français)" },
+                { name: "Central America & Caribbean", sub: "América Central y el Caribe" },
+                { name: "Chile", sub: "" },
+                { name: "China", sub: "中国" },
+                { name: "Colombia", sub: "" },
+                { name: "Croatia", sub: "" },
+                { name: "Czech Republic", sub: "" },
+                { name: "Ecuador", sub: "" },
+                { name: "Finland", sub: "" },
+                { name: "France", sub: "" },
+                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz" },
+                { name: "Greece", sub: "" },
+                { name: "Hungary", sub: "" },
+                { name: "India", sub: "" },
+                { name: "Indonesia", sub: "" },
+                { name: "Ireland", sub: "" },
+                { name: "Italy", sub: "Italia" },
+                { name: "Japan", sub: "日本" },
+                { name: "Latvia", sub: "" },
+                { name: "Maghreb", sub: "Le Maghreb" },
+                { name: "Malaysia", sub: "" },
+                { name: "Mexico", sub: "" },
+                { name: "Netherlands", sub: "" },
+                { name: "Norway", sub: "" },
+                { name: "Pakistan", sub: "" },
+                { name: "Paraguay", sub: "" },
+                { name: "Peru", sub: "Perú" },
+                { name: "Philippines", sub: "" },
+                { name: "Poland", sub: "" },
+                { name: "Portugal", sub: "" },
+                { name: "Romania", sub: "" },
+                { name: "Saudi Arabia", sub: "" },
+                { name: "Serbia", sub: "" },
+                { name: "Singapore", sub: "" },
+                { name: "Slovakia", sub: "" },
+                { name: "South Africa", sub: "" },
+                { name: "South Korea", sub: "" },
+                { name: "Spain", sub: "España" },
+                { name: "Sweden", sub: "Sverige" },
+                { name: "Switzerland", sub: "Suisse (Français)" },
+                { name: "Taiwan", sub: "" },
+                { name: "Thailand", sub: "" },
+                { name: "Turkey", sub: "Türkiye" },
+                { name: "Ukraine", sub: "" },
+                { name: "United Kingdom", sub: "" },
+                { name: "United States of America", sub: "" },
+                { name: "Venezuela", sub: "" },
+                { name: "Vietnam", sub: "" },
+            ];
+
+            // Function to show the modal with transition
+            function openModal() {
+                // If mobile menu is open, close it first
+                if (!mobileMenu.classList.contains('translate-x-full')) {
+                    toggleMobileMenu();
+                }
+
+                countryModal.classList.remove('hidden');
+                // Force reflow to ensure transition starts
+                countryModal.offsetHeight; 
+                countryModal.classList.add('opacity-100');
+                countryModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+                document.body.classList.add('overflow-hidden'); // Lock scroll when modal is open
+            }
+
+            // Function to hide the modal with transition
+            function closeOutModal() {
+                countryModal.classList.remove('opacity-100');
+                countryModal.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+
+                // Hide completely after transition (300ms)
+                setTimeout(() => {
+                    countryModal.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden'); // Unlock scroll
+                }, 300);
+            }
+
+            // Render country links
+            countries.forEach(country => {
+                const link = document.createElement('a');
+                link.href = "#"; // Placeholder link for navigation
+                
+                let content = country.name;
+                let className = 'text-klyr-dark text-sm hover:text-klyr-red transition duration-150';
+
+                if (country.isGlobal) {
+                    // Special styling for the 'Global' link
+                    content = `<span class="font-bold">${country.name}</span> <span class="text-sm text-gray-500">${country.sub}</span>`;
+                    className = 'font-bold block text-klyr-dark hover:text-klyr-red transition duration-150';
+                } else if (country.sub) {
+                    // Countries with secondary/local name
+                    content = `${country.name} <span class="text-xs text-gray-500">| ${country.sub}</span>`;
+                }
+                
+                link.innerHTML = content;
+                link.className = className;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    // Determine what to display in the alert
+                    const selectedName = country.name === 'Global' ? 'Global' : `${country.name}${country.sub ? ' (' + country.sub + ')' : ''}`;
+                    alertMessage('Region set to ' + selectedName);
+                    closeOutModal();
+                };
+
+                countryListContainer.appendChild(link);
+            });
+
+            // Function to attach Modal Listener to an element
+            function attachModalListener(element) {
+                if (element) {
+                    element.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        openModal();
+                    });
+                }
+            }
+            
+            // Attach listener to Desktop Icon and Mobile Link
+            attachModalListener(globalIconDesktop);
+            attachModalListener(globalLinkMobile);
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeOutModal);
+            }
+            
+            // Close modal if user clicks on the backdrop
+            if (countryModal) {
+                countryModal.addEventListener('click', (e) => {
+                    if (e.target === countryModal) {
+                        closeOutModal();
+                    }
+                });
+            }
+
+            // 1. Simple button interaction (replacing standard alert/confirm)
+            betaBtn.addEventListener('click', () => {
+                // Show the message box for 3 seconds
+                alertMessage('Thank you for your interest! The beta sign-up page is coming soon.');
+            });
+        });
+    </script>
 
 </body>
 </html>
