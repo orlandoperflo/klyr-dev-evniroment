@@ -14,7 +14,9 @@
             theme: {
                 extend: {
                     colors: {
+                        // PRIMARY COLOR VARIABLE
                         'klyr-red': '#E72F3C',
+                        // DARK TEXT COLOR VARIABLE
                         'klyr-dark': '#1F2937',
                     },
                     fontFamily: {
@@ -41,7 +43,7 @@
             --card-shadow: 0 0px 0px rgba(0, 0, 0, 0.08);
 
             /* ===============================================================
-            USER EDITABLE: LOGO BORDER STYLING VARIABLE (Applied to Hero Logo)
+            USER EDITABLE: LOGO BORDER STYLING VARIABLES (Applied to Hero Logo)
             =============================================================== */
             /* Format: <size> <style> <color> (e.g., 20px solid #E72F3C) */
             --logo-border-style: 20px solid var(--klyr-red);
@@ -52,6 +54,7 @@
             /* Control border size for the large logo box (e.g., 2px, 8px, 20px) */
             --box-border-thickness: 4px; 
         }
+
 .border-red-200 {
     --tw-border-opacity: 1!important;
     border-color: red!important;
@@ -273,8 +276,9 @@
                 <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
                     JOIN THE CLARITY MOVEMENT
                 </h2>
+                <!-- UPDATED: KLYR™ text now in red -->
                 <p class="text-xl text-gray-700 mb-8">
-                    Become one of the first to experience KLYR™ in action
+                    Become one of the first to experience <span class="text-klyr-red">KLYR™</span> in action
                 </p>
                 <button id="join-beta-btn" class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wider">
                     JOIN THE BETA
@@ -300,7 +304,8 @@
                 </h2>
                 
                 <p class="text-lg text-gray-700 mb-6">
-                    KLYR™ is now entering its global beta phase. We’re inviting consumers, brands, and industry leaders to join the mission to teach clarity to the world. Every scan, every test, every idea helps the AI learn and protect more lives. Be among the first to shape a future without confusion.
+                    <!-- KLYR™ text wrapped in span with text-klyr-red class -->
+                    <span class="text-klyr-red">KLYR™</span> is now entering its global beta phase. We’re inviting consumers, brands, and industry leaders to join the mission to teach clarity to the world. Every scan, every test, every idea helps the AI learn and protect more lives. Be among the first to shape a future without confusion.
                 </p>
 
                 <!-- Registration Form: Background changed to bg-white -->
@@ -342,8 +347,8 @@
                 </form>
             </div>
 
-            <!-- Confirmation Message (Hidden by default) -->
-            <div id="beta-confirmation-message" class="hidden text-center bg-green-50 p-10 rounded-xl border-4 border-green-300">
+            <!-- Confirmation Message (Updated to use KLYR colors) -->
+            <div id="beta-confirmation-message" class="hidden text-center bg-white p-10 rounded-xl border-4 border-klyr-red shadow-2xl">
                 <i class="fas fa-check-circle text-6xl text-klyr-red mb-6 animate-pulse"></i>
                 <h3 class="text-3xl font-extrabold text-klyr-dark mb-4">Registration Complete!</h3>
                 <p class="text-xl text-gray-700 font-medium italic">
@@ -373,33 +378,43 @@
         </div>
     </div>
     
-    <!-- Footer -->
+    <!-- Footer - UPDATED STYLING AND TRADEMARK TEXT -->
     <footer class="bg-gray-50 border-t border-gray-200 pt-12 pb-8">
         <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <!-- Social Icons -->
+            <!-- Social Icons: Now explicitly klyr-red -->
             <div class="flex justify-center space-x-6 mb-6">
-                <a href="#" class="text-gray-400 hover:text-klyr-red transition duration-150"><i class="fab fa-instagram text-2xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-klyr-red transition duration-150"><i class="fab fa-facebook-f text-2xl"></i></a>
-                <a href="#" class="text-gray-400 hover:text-klyr-red transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
+                <!-- Changed text-gray-400 to text-klyr-red for primary color -->
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
             </div>
 
-            <!-- Copyright and Trademarks -->
-            <p class="text-sm text-gray-500 mb-2" id="copyright-text">
+            <!-- Copyright: Now dark text color -->
+            <p class="text-sm text-klyr-dark mb-2" id="copyright-text">
                 &copy;2025 KLYR Sciences Inc. All rights reserved.
             </p>
-            <p class="text-xs text-gray-400 mb-6">
-                KLYR™, KLYRSCAN™, KLYRCLOUD™, MYKLYR™, and KLYRCAM™ are trademarks of KLYR Sciences Inc.
+            
+            <!-- Trademarks: Updated order and color styling -->
+            <p class="text-xs text-klyr-dark mb-6">
+                <span class="text-klyr-red">KLYR™</span>, 
+                <span class="text-klyr-red">MyKLYR™</span>, 
+                <span class="text-klyr-red">KLYRSCAN™</span>, 
+                <span class="text-klyr-red">KLYRCAM™</span>, 
+                <span class="text-klyr-red">KLYRCLOUD™</span>, 
+                and <span class="text-klyr-red">KLYRAI™</span> are trademarks of KLYR Sciences Inc.
             </p>
 
-            <!-- Policy Links -->
-            <div class="flex justify-center space-x-4 text-xs text-gray-500">
+            <!-- Policy Links: Now dark text color -->
+            <div class="flex justify-center space-x-4 text-xs text-klyr-dark">
                 <a href="#" class="hover:text-klyr-red transition duration-150">Privacy Policy</a>
                 <span>|</span>
                 <a href="#" class="hover:text-klyr-red transition duration-150">Terms of Use</a>
                 <span>|</span>
                 <a href="#" class="hover:text-klyr-red transition duration-150">Contact Us</a>
             </div>
-            <p class="text-xs text-gray-400 mt-2">
+            
+            <!-- Last Line: Now dark text color -->
+            <p class="text-xs text-klyr-dark mt-2">
                 Advancing clarity through technology.
             </p>
         </div>
@@ -411,7 +426,7 @@
             
             // --- Global Data (Countries) ---
             const countries = [
-                { name: "Global", sub: "", isGlobal: true },
+                { name: "Global", sub: "🌎", isGlobal: true },
                 { name: "Argentina", sub: "" },
                 { name: "Australia & New Zealand", sub: "" },
                 { name: "Belgium", sub: "" },
@@ -485,7 +500,7 @@
             const betaSignupPage = document.getElementById('beta-signup-page');
             const joinBetaBtn = document.getElementById('join-beta-btn');
             const backToHomeBtn = document.getElementById('back-to-home-btn');
-            const navLogoLink = document.getElementById('nav-logo-link'); // Added element reference
+            const navLogoLink = document.getElementById('nav-logo-link'); 
 
             // --- Form Elements ---
             const countrySelect = document.getElementById('country-select');
