@@ -110,19 +110,20 @@
             box-shadow: 0 0 0 3px rgba(231, 47, 60, 0.2);
         }
         
-        /* HIDE GOOGLE TRANSLATE BAR/WIDGET */
-        #google_translate_element {
-            /* Hides the placeholder div itself */
-            display: none;
-            visibility: hidden;
-        }
-        /* Hides the top banner that Google Translate usually inserts */
+        /* =================================================================== */
+        /* CRITICAL: HIDES ALL GOOGLE TRANSLATE UI ELEMENTS */
+        /* =================================================================== */
+        #google_translate_element, 
+        .goog-te-gadget,
         .goog-te-banner-frame {
+            /* Hides the placeholder div, the widget, and the top banner */
             display: none !important;
+            visibility: hidden !important;
         }
-        /* Fixes body position that the translator messes up */
+        /* CRITICAL: Fixes body positioning issues caused by the hidden banner */
         body {
             top: 0px !important; 
+            position: relative !important; 
         }
     </style>
 </head>
@@ -130,6 +131,7 @@
 
     <!-- =================================================================== -->
     <!-- HIDDEN GOOGLE TRANSLATE ELEMENT & SCRIPT -->
+    <!-- This element initializes the translation service but is hidden by CSS. -->
     <!-- =================================================================== -->
     <div id="google_translate_element"></div>
     <script type="text/javascript">
@@ -138,8 +140,7 @@
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 autoDisplay: false,
-                // Only use the 'GOOGLE' display type, which is the internal trigger.
-                // We use 'inline' mode to access the select box but keep it hidden.
+                // Using 'inline' layout to access the select box but keeping it hidden.
                 layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
             }, 'google_translate_element');
         }
@@ -253,7 +254,7 @@
                     <!-- Card 1: Food & Beverage -->
                     <div class="rounded-xl crisis-card-style p-6 text-center">
                         <h3 class="text-sm font-bold text-klyr-dark mb-4">Food & Beverage</h3>
-                        <div class="text-5xl font-extrabold text-klyr-red mb-4">100M+</div>
+                        <div class="text-5xl font-extrabold text-klyr-red mb-4">100+</div>
                         <p class="text-sm text-gray-600">
                             Hundreds of recalls each year. Billions of units destroyed.
                         </p>
@@ -454,7 +455,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- Global Data (Countries & Languages) ---
-            // Added 'langCode' property for Google Translate targeting
             const countries = [
                 { name: "Global", sub: "🌎", isGlobal: true, slug: 'global', langCode: 'en' },
                 { name: "Argentina", sub: "", slug: 'ar', langCode: 'es' },
@@ -465,7 +465,7 @@
                 { name: "Canada", sub: "Le Canada (Français)", slug: 'qc', langCode: 'fr' },
                 { name: "Central America & Caribbean", sub: "América Central y el Caribe", slug: 'cb', langCode: 'es' },
                 { name: "Chile", sub: "", slug: 'cl', langCode: 'es' },
-                { name: "China", sub: "中国", slug: 'cn', langCode: 'zh-CN' }, // Simplified Chinese
+                { name: "China", sub: "中国", slug: 'cn', langCode: 'zh-CN' },
                 { name: "Colombia", sub: "", slug: 'co', langCode: 'es' },
                 { name: "Croatia", sub: "", slug: 'hr', langCode: 'hr' },
                 { name: "Czech Republic", sub: "", slug: 'cz', langCode: 'cs' },
@@ -475,13 +475,13 @@
                 { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz", slug: 'de', langCode: 'de' },
                 { name: "Greece", sub: "", slug: 'gr', langCode: 'el' },
                 { name: "Hungary", sub: "", slug: 'hu', langCode: 'hu' },
-                { name: "India", sub: "", slug: 'in', langCode: 'en' }, // Primary language for corporate site
+                { name: "India", sub: "", slug: 'in', langCode: 'en' }, 
                 { name: "Indonesia", sub: "", slug: 'id', langCode: 'id' },
                 { name: "Ireland", sub: "", slug: 'ie', langCode: 'en' },
                 { name: "Italy", sub: "Italia", slug: 'it', langCode: 'it' },
                 { name: "Japan", sub: "日本", slug: 'jp', langCode: 'ja' },
                 { name: "Latvia", sub: "", slug: 'lv', langCode: 'lv' },
-                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma', langCode: 'fr' }, // Defaulting to French for Maghreb
+                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma', langCode: 'fr' },
                 { name: "Malaysia", sub: "", slug: 'my', langCode: 'ms' },
                 { name: "Mexico", sub: "México", slug: 'mx', langCode: 'es' },
                 { name: "Netherlands", sub: "", slug: 'nl', langCode: 'nl' },
@@ -501,8 +501,8 @@
                 { name: "South Korea", sub: "", slug: 'kr', langCode: 'ko' },
                 { name: "Spain", sub: "España", slug: 'es', langCode: 'es' },
                 { name: "Sweden", sub: "Sverige", slug: 'se', langCode: 'sv' },
-                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch', langCode: 'fr' }, // Defaulting to French for Swiss French option
-                { name: "Taiwan", sub: "", slug: 'tw', langCode: 'zh-TW' }, // Traditional Chinese
+                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch', langCode: 'fr' }, 
+                { name: "Taiwan", sub: "", slug: 'tw', langCode: 'zh-TW' }, 
                 { name: "Thailand", sub: "", slug: 'th', langCode: 'th' },
                 { name: "Turkey", sub: "Türkiye", slug: 'tr', langCode: 'tr' },
                 { name: "Ukraine", sub: "", slug: 'ua', langCode: 'uk' },
@@ -514,7 +514,7 @@
             
             // Generate a list of all valid slugs for path checking
             const VALID_SLUGS = countries.map(c => c.slug).filter(s => s !== 'global');
-
+            
             // --- Google Translate Functionality ---
             
             /**
@@ -544,8 +544,8 @@
 
             // --- Logo & Styling Constants ---
             const LOGO_TEXT = 'KLYR™';
-            const NAV_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png'; // Original Logo URL for Nav
-            const CONTENT_IMG_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/Kare.png'; // New URL for the Hero Box (Kare image)
+            const NAV_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png'; 
+            const CONTENT_IMG_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/Kare.png'; 
             const CONTENT_BOX_CLASSES = 'content-box-border-style rounded-lg flex h-full overflow-hidden'; 
             
             const navLogoImg = document.getElementById('nav-logo-img');
@@ -610,34 +610,32 @@
             function setCountryPath(newSlug, newLangCode) {
                 const currentPath = window.location.pathname;
                 
-                // 1. Clean path segments (remove empty strings from leading/trailing slashes)
+                // 1. Clean path segments 
                 let pathSegments = currentPath.split('/').filter(p => p.length > 0);
                 let newPathname;
                 
-                // Check if the current path already starts with a known country slug
+                // Identify the current slug if it exists
                 const currentSlug = pathSegments.length > 0 && VALID_SLUGS.includes(pathSegments[0]) 
                                     ? pathSegments[0] 
                                     : null;
 
                 if (newSlug === 'global' || newLangCode === 'en') {
-                    // Remove slug if one exists and reset translation to English
+                    // Remove slug if one exists
                     if (currentSlug) {
-                        pathSegments.shift(); // Remove the slug
+                        pathSegments.shift(); 
                     }
                     translatePage('en');
                 } else {
                     // Set a specific country slug
                     if (currentSlug) {
-                        // Replace existing slug
                         pathSegments[0] = newSlug;
                     } else {
-                        // Prepend new slug
                         pathSegments.unshift(newSlug);
                     }
                     translatePage(newLangCode);
                 }
                 
-                // Reconstruct the path, ensuring a leading slash
+                // Reconstruct the path
                 newPathname = '/' + pathSegments.join('/');
                 
                 // Normalize path
@@ -648,10 +646,10 @@
                     newPathname = '/';
                 }
 
-                // If path changed, use pushState to update the URL without refresh
+                // If path changed, update the URL without refresh
                 if (newPathname !== currentPath) {
                     window.history.pushState({}, '', newPathname);
-                    alertMessage(`Region set to ${newSlug.toUpperCase()}. URL updated to: ${newPathname}. Content translated to ${newLangCode.toUpperCase()}.`);
+                    alertMessage(`Region set to ${newSlug.toUpperCase()}. Content translated to ${newLangCode.toUpperCase()}.`);
                 } else if (newSlug === 'global') {
                     alertMessage(`You are already in the Global (English) view.`);
                 } else {
@@ -660,37 +658,62 @@
 
                 closeOutModal();
             }
+            
+            /**
+             * Checks the current URL path for a country slug and triggers translation.
+             * This ensures the translation is "sticky" on refresh or shared links.
+             */
+            function checkAndApplyTranslationOnLoad() {
+                const currentPath = window.location.pathname;
+                const pathSegments = currentPath.split('/').filter(p => p.length > 0);
+                
+                // 1. Check if the first segment is a recognized slug
+                const currentSlug = pathSegments.length > 0 && VALID_SLUGS.includes(pathSegments[0]) 
+                                    ? pathSegments[0] 
+                                    : null;
+                                    
+                if (currentSlug) {
+                    // 2. Find the country object to get the language code
+                    const country = countries.find(c => c.slug === currentSlug);
+                    if (country && country.langCode !== 'en') {
+                        // 3. Apply translation if not English
+                        console.log(`Applying sticky translation for slug ${currentSlug} (${country.langCode})`);
+                        translatePage(country.langCode);
+                    }
+                }
+            }
 
 
             // --- Initialization Functions ---
 
             // Apply Content Box Classes
             if (contentBox) {
-                // This ensures the custom CSS style variable for the border thickness is respected
                 contentBox.className = CONTENT_BOX_CLASSES; 
             }
 
             // Populate the Logo in two locations
             if (navLogoImg) {
-                navLogoImg.src = NAV_LOGO_URL; // Uses the original KLYR logo
+                navLogoImg.src = NAV_LOGO_URL; 
                 navLogoImg.alt = LOGO_TEXT + ' Logo (Navigation)';
             }
             if (contentLogoImg) {
-                contentLogoImg.src = CONTENT_IMG_URL; // Uses the new Kare image
+                contentLogoImg.src = CONTENT_IMG_URL; 
                 contentLogoImg.alt = 'Kare Image Placeholder';
             }
 
             // Populate Country Select Dropdown for the Beta Form
             function populateCountryDropdown() {
-                // Filter out the 'Global' entry for the form dropdown
                 countries.filter(c => !c.isGlobal).forEach(country => {
                     const option = document.createElement('option');
-                    option.value = country.slug; // Use slug as the value
+                    option.value = country.slug; 
                     option.textContent = country.name + (country.sub ? ` (${country.sub})` : '');
                     countrySelect.appendChild(option);
                 });
             }
             populateCountryDropdown();
+            
+            // Apply sticky translation immediately on load
+            checkAndApplyTranslationOnLoad();
 
             
             // --- Page Routing Logic ---
@@ -728,44 +751,36 @@
             registrationForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
-                // Collect form data (for logging/future API call placeholder)
                 const formData = new FormData(registrationForm);
                 const data = Object.fromEntries(formData.entries());
 
                 console.log('Beta Registration Submitted:', data);
 
-                // Simulate success: Show confirmation message and hide the form
                 formContainer.classList.add('hidden');
                 confirmationMessage.classList.remove('hidden');
                 
-                // Form fields cleared is handled in goToHomePage, but we'll reset here for good measure
                 registrationForm.reset();
             });
 
             // Share Movement Button
             shareMovementBtn.addEventListener('click', () => {
                 alertMessage('Sharing is caring! Copy the current URL to share the movement.', false);
-                // Note: Real world implementation would use the Web Share API or copy logic
             });
 
 
-            // --- Mobile Menu Logic (FIXED) ---
+            // --- Mobile Menu Logic ---
             function toggleMobileMenu() {
-                // Check if the menu is currently hidden (meaning the class translate-x-full is present)
                 const isMenuHidden = mobileMenu.classList.contains('translate-x-full');
                 
                 if (isMenuHidden) {
-                    // Menu is hidden, so we OPEN it (remove translate-x-full)
                     mobileMenu.classList.remove('translate-x-full');
-                    document.body.classList.add('overflow-hidden'); // Disable scrolling when open
+                    document.body.classList.add('overflow-hidden');
                 } else {
-                    // Menu is visible, so we CLOSE it (add translate-x-full)
                     mobileMenu.classList.add('translate-x-full');
-                    document.body.classList.remove('overflow-hidden'); // Enable scrolling when closed
+                    document.body.classList.remove('overflow-hidden');
                 }
             }
 
-            // Event Listeners for mobile menu
             if (mobileMenuBtn) {
                 mobileMenuBtn.addEventListener('click', toggleMobileMenu);
             }
@@ -776,14 +791,10 @@
             // Close mobile menu if any standard link is clicked
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    // Check if the menu is currently OPEN (translate-x-full is NOT present)
                     if (!mobileMenu.classList.contains('translate-x-full') && link.id !== 'global-link-mobile') {
-                        // Close the menu
                         toggleMobileMenu();
                         
-                        // If it's the 'Join the Movement' link, trigger the form view
                         if (link.textContent.includes('JOIN THE MOVEMENT')) {
-                             // Timeout to allow menu to close before page transition
                             setTimeout(() => {
                                 homepageContent.classList.add('hidden');
                                 betaSignupPage.classList.remove('hidden');
@@ -798,9 +809,8 @@
             // --- Country Modal Logic (Shared with global-link-mobile) ---
 
             function openModal() {
-                // Close mobile menu if open before showing modal
                 if (!mobileMenu.classList.contains('translate-x-full')) {
-                    toggleMobileMenu();
+                    toggleMobileMenu(); // Close mobile menu if open
                 }
 
                 countryModal.classList.remove('hidden');
@@ -832,7 +842,6 @@
                 let content = country.name;
                 let className = 'text-klyr-dark text-sm hover:text-klyr-red transition duration-150';
                 
-                // Format the text content for the modal
                 if (country.isGlobal) {
                     content = `<span class="font-bold">${country.name}</span> <span class="text-sm text-gray-500">${country.sub}</span>`;
                     className = 'font-bold block text-klyr-dark hover:text-klyr-red transition duration-150';
@@ -843,10 +852,8 @@
                 link.innerHTML = content;
                 link.className = className;
                 
-                // Add the new dynamic path change and translation handler
                 link.onclick = (e) => {
                     e.preventDefault();
-                    // Pass both the slug and the language code
                     setCountryPath(country.slug, country.langCode); 
                 };
 
