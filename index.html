@@ -55,15 +55,6 @@
             --box-border-thickness: 4px; 
         }
 
-.border-red-200 {
-    --tw-border-opacity: 1!important;
-    border-color: red!important;
-}
-
-.border-2 {
-    border-width: 3px!important;
-}
-
         /* Custom class for standard content width */
         .max-w-site {
             max-width: var(--site-max-width);
@@ -82,7 +73,10 @@
 
         /* Custom class for the content logo border */
         .content-logo-border {
+            /* This border is now applied directly to the image */
             border: var(--logo-border-style) !important;
+            /* Ensures the image is correctly clipped with the border radius */
+            display: block; 
         }
         
         /* Custom class for the Content Box border style using the new variable */
@@ -117,7 +111,7 @@
         }
     </style>
 </head>
-<body class="text-klyr-dark">
+<body>
 
     <!-- Header & Navigation -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -192,19 +186,17 @@
                             <br class="hidden sm:block">
                             <span class="text-klyr-dark">COSTS LIVES.</span>
                             <br class="hidden sm:block">
-                            <!-- UPDATED: KLYR is red, ™ is dark -->
+                            <!-- KLYR is red, ™ is dark -->
                             <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> SAVES LIVES
                         </h1>
                         <p class="text-gray-600 text-lg">
                             Every day, across every continent, confusion destroys value, quality, and human life. It's not counterfeiting—it's misidentification, relabeling, and misunderstanding. The global clarity problem is enormous. Our 100% genuine answer is preventable.
                         </p>
                     </div>
-                    <!-- Right Box -->
-                    <div id="content-box" class="content-box-border-style rounded-lg p-8 flex justify-center items-center h-full"> 
-                        <div class="text-center">
-                            <!-- Content Logo -->
-                            <img id="content-logo-img" class="h-20 w-auto mx-auto content-logo-border" alt="KLYR™ Logo" onerror="this.outerHTML = '<span class=\'text-6xl font-extrabold text-klyr-red\'>KLYR™</span>';">
-                        </div>
+                    <!-- Right Box (Updated: Removed p-8 and centering classes) -->
+                    <div id="content-box" class="content-box-border-style rounded-lg flex h-full overflow-hidden"> 
+                        <!-- Content Logo (Updated: Added w-full, h-full, object-cover, and rounded-lg) -->
+                        <img id="content-logo-img" class="content-logo-border w-full h-full object-cover rounded-lg" alt="Kare Image Placeholder" onerror="this.outerHTML = '<span class=\'text-6xl font-extrabold text-klyr-red\'>KLYR™</span>';">
                     </div>
                 </div>
             </section>
@@ -278,7 +270,7 @@
                 <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
                     JOIN THE CLARITY MOVEMENT
                 </h2>
-                <!-- UPDATED: KLYR is red, ™ is dark -->
+                <!-- KLYR is red, ™ is dark -->
                 <p class="text-xl text-gray-700 mb-8">
                     Become one of the first to experience <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> in action
                 </p>
@@ -306,7 +298,7 @@
                 </h2>
                 
                 <p class="text-lg text-gray-700 mb-6">
-                    <!-- UPDATED: KLYR is red, ™ is dark -->
+                    <!-- KLYR is red, ™ is dark -->
                     <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> is now entering its global beta phase. We’re inviting consumers, brands, and industry leaders to join the mission to teach clarity to the world. Every scan, every test, every idea helps the AI learn and protect more lives. Be among the first to shape a future without confusion.
                 </p>
 
@@ -380,7 +372,7 @@
         </div>
     </div>
     
-    <!-- Footer - UPDATED STYLING AND TRADEMARK TEXT -->
+    <!-- Footer - KLYR red styling preserved -->
     <footer class="bg-gray-50 border-t border-gray-200 pt-12 pb-8">
         <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <!-- Social Icons: Now explicitly klyr-red -->
@@ -391,19 +383,19 @@
                 <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
             </div>
 
-            <!-- Copyright: Now dark text color -->
+            <!-- Copyright: KLYR in red -->
             <p class="text-sm text-klyr-dark mb-2" id="copyright-text">
-                &copy;2025 KLYR Sciences Inc. All rights reserved.
+                &copy;2025 <span class="text-klyr-red">KLYR</span> Sciences Inc. All rights reserved.
             </p>
             
-            <!-- Trademarks: Updated for KLYR in red and ™ in dark -->
+            <!-- Trademarks: KLYR in red, ™ in dark -->
             <p class="text-xs text-klyr-dark mb-6">
                 <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span>, 
                 <span class="text-klyr-red">MyKLYR</span><span class="text-klyr-dark">™</span>, 
                 <span class="text-klyr-red">KLYRSCAN</span><span class="text-klyr-dark">™</span>, 
                 <span class="text-klyr-red">KLYRCAM</span><span class="text-klyr-dark">™</span>, 
                 <span class="text-klyr-red">KLYRCLOUD</span><span class="text-klyr-dark">™</span>, 
-                and <span class="text-klyr-red">KLYRAI</span><span class="text-klyr-dark">™</span> are trademarks of KLYR Sciences Inc.
+                and <span class="text-klyr-red">KLYRAI</span><span class="text-klyr-dark">™</span> are trademarks of <span class="text-klyr-red">KLYR</span> Sciences Inc.
             </p>
 
             <!-- Policy Links: Now dark text color -->
@@ -490,8 +482,10 @@
 
             // --- Logo & Styling Constants ---
             const LOGO_TEXT = 'KLYR™';
-            const LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png';
-            const CONTENT_BOX_CLASSES = 'border-2 border-red-200 rounded-lg p-8 flex justify-center items-center h-full'; 
+            const NAV_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png'; // Original Logo URL for Nav
+            const CONTENT_IMG_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/Kare.png'; // New URL for the Hero Box (Kare image)
+            // UPDATED: Removed p-8 (padding) and centering classes (justify-center, items-center), added overflow-hidden to clip image.
+            const CONTENT_BOX_CLASSES = 'content-box-border-style rounded-lg flex h-full overflow-hidden'; 
             
             const navLogoImg = document.getElementById('nav-logo-img');
             const contentLogoImg = document.getElementById('content-logo-img');
@@ -531,17 +525,18 @@
 
             // Apply Content Box Classes
             if (contentBox) {
-                contentBox.className = CONTENT_BOX_CLASSES;
+                // This ensures the custom CSS style variable for the border thickness is respected
+                contentBox.className = CONTENT_BOX_CLASSES; 
             }
 
             // Populate the Logo in two locations
             if (navLogoImg) {
-                navLogoImg.src = LOGO_URL;
+                navLogoImg.src = NAV_LOGO_URL; // Uses the original KLYR logo
                 navLogoImg.alt = LOGO_TEXT + ' Logo (Navigation)';
             }
             if (contentLogoImg) {
-                contentLogoImg.src = LOGO_URL;
-                contentLogoImg.alt = LOGO_TEXT + ' Logo (Content Box)';
+                contentLogoImg.src = CONTENT_IMG_URL; // Uses the new Kare image
+                contentLogoImg.alt = 'Kare Image Placeholder';
             }
 
             // Populate Country Select Dropdown for the Beta Form
