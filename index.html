@@ -109,9 +109,44 @@
             border-color: #E72F3C; /* klyr-red */
             box-shadow: 0 0 0 3px rgba(231, 47, 60, 0.2);
         }
+        
+        /* HIDE GOOGLE TRANSLATE BAR/WIDGET */
+        #google_translate_element {
+            /* Hides the placeholder div itself */
+            display: none;
+            visibility: hidden;
+        }
+        /* Hides the top banner that Google Translate usually inserts */
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        /* Fixes body position that the translator messes up */
+        body {
+            top: 0px !important; 
+        }
     </style>
 </head>
 <body>
+
+    <!-- =================================================================== -->
+    <!-- HIDDEN GOOGLE TRANSLATE ELEMENT & SCRIPT -->
+    <!-- =================================================================== -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        // Standard function required by Google Translate widget
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                // Only use the 'GOOGLE' display type, which is the internal trigger.
+                // We use 'inline' mode to access the select box but keep it hidden.
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- =================================================================== -->
+
 
     <!-- Header & Navigation -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -218,7 +253,7 @@
                     <!-- Card 1: Food & Beverage -->
                     <div class="rounded-xl crisis-card-style p-6 text-center">
                         <h3 class="text-sm font-bold text-klyr-dark mb-4">Food & Beverage</h3>
-                        <div class="text-5xl font-extrabold text-klyr-red mb-4">100+</div>
+                        <div class="text-5xl font-extrabold text-klyr-red mb-4">100M+</div>
                         <p class="text-sm text-gray-600">
                             Hundreds of recalls each year. Billions of units destroyed.
                         </p>
@@ -418,67 +453,91 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- Global Data (Countries) ---
-            // Added 'slug' property to each country for dynamic URL path segments
+            // --- Global Data (Countries & Languages) ---
+            // Added 'langCode' property for Google Translate targeting
             const countries = [
-                { name: "Global", sub: "🌎", isGlobal: true, slug: 'global' },
-                { name: "Argentina", sub: "", slug: 'ar' },
-                { name: "Australia & New Zealand", sub: "", slug: 'au' },
-                { name: "Belgium", sub: "", slug: 'be' },
-                { name: "Brazil", sub: "Brasil", slug: 'br' },
-                { name: "Canada", sub: "(English)", slug: 'ca' },
-                { name: "Canada", sub: "Le Canada (Français)", slug: 'qc' },
-                { name: "Central America & Caribbean", sub: "América Central y el Caribe", slug: 'cb' },
-                { name: "Chile", sub: "", slug: 'cl' },
-                { name: "China", sub: "中国", slug: 'cn' },
-                { name: "Colombia", sub: "", slug: 'co' },
-                { name: "Croatia", sub: "", slug: 'hr' },
-                { name: "Czech Republic", sub: "", slug: 'cz' },
-                { name: "Ecuador", sub: "", slug: 'ec' },
-                { name: "Finland", sub: "", slug: 'fi' },
-                { name: "France", sub: "", slug: 'fr' },
-                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz", slug: 'de' },
-                { name: "Greece", sub: "", slug: 'gr' },
-                { name: "Hungary", sub: "", slug: 'hu' },
-                { name: "India", sub: "", slug: 'in' },
-                { name: "Indonesia", sub: "", slug: 'id' },
-                { name: "Ireland", sub: "", slug: 'ie' },
-                { name: "Italy", sub: "Italia", slug: 'it' },
-                { name: "Japan", sub: "日本", slug: 'jp' },
-                { name: "Latvia", sub: "", slug: 'lv' },
-                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma' },
-                { name: "Malaysia", sub: "", slug: 'my' },
-                { name: "Mexico", sub: "México", slug: 'mx' },
-                { name: "Netherlands", sub: "", slug: 'nl' },
-                { name: "Norway", sub: "", slug: 'no' },
-                { name: "Pakistan", sub: "", slug: 'pk' },
-                { name: "Paraguay", sub: "", slug: 'py' },
-                { name: "Peru", sub: "Perú", slug: 'pe' },
-                { name: "Philippines", sub: "", slug: 'ph' },
-                { name: "Poland", sub: "", slug: 'pl' },
-                { name: "Portugal", sub: "", slug: 'pt' },
-                { name: "Romania", sub: "", slug: 'ro' },
-                { name: "Saudi Arabia", sub: "", slug: 'sa' },
-                { name: "Serbia", sub: "", slug: 'rs' },
-                { name: "Singapore", sub: "", slug: 'sg' },
-                { name: "Slovakia", sub: "", slug: 'sk' },
-                { name: "South Africa", sub: "", slug: 'za' },
-                { name: "South Korea", sub: "", slug: 'kr' },
-                { name: "Spain", sub: "España", slug: 'es' },
-                { name: "Sweden", sub: "Sverige", slug: 'se' },
-                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch' },
-                { name: "Taiwan", sub: "", slug: 'tw' },
-                { name: "Thailand", sub: "", slug: 'th' },
-                { name: "Turkey", sub: "Türkiye", slug: 'tr' },
-                { name: "Ukraine", sub: "", slug: 'ua' },
-                { name: "United Kingdom", sub: "", slug: 'uk' },
-                { name: "United States of America", sub: "", slug: 'us' },
-                { name: "Venezuela", sub: "", slug: 've' },
-                { name: "Vietnam", sub: "", slug: 'vn' },
+                { name: "Global", sub: "🌎", isGlobal: true, slug: 'global', langCode: 'en' },
+                { name: "Argentina", sub: "", slug: 'ar', langCode: 'es' },
+                { name: "Australia & New Zealand", sub: "", slug: 'au', langCode: 'en' },
+                { name: "Belgium", sub: "", slug: 'be', langCode: 'fr' },
+                { name: "Brazil", sub: "Brasil", slug: 'br', langCode: 'pt' },
+                { name: "Canada", sub: "(English)", slug: 'ca', langCode: 'en' },
+                { name: "Canada", sub: "Le Canada (Français)", slug: 'qc', langCode: 'fr' },
+                { name: "Central America & Caribbean", sub: "América Central y el Caribe", slug: 'cb', langCode: 'es' },
+                { name: "Chile", sub: "", slug: 'cl', langCode: 'es' },
+                { name: "China", sub: "中国", slug: 'cn', langCode: 'zh-CN' }, // Simplified Chinese
+                { name: "Colombia", sub: "", slug: 'co', langCode: 'es' },
+                { name: "Croatia", sub: "", slug: 'hr', langCode: 'hr' },
+                { name: "Czech Republic", sub: "", slug: 'cz', langCode: 'cs' },
+                { name: "Ecuador", sub: "", slug: 'ec', langCode: 'es' },
+                { name: "Finland", sub: "", slug: 'fi', langCode: 'fi' },
+                { name: "France", sub: "", slug: 'fr', langCode: 'fr' },
+                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz", slug: 'de', langCode: 'de' },
+                { name: "Greece", sub: "", slug: 'gr', langCode: 'el' },
+                { name: "Hungary", sub: "", slug: 'hu', langCode: 'hu' },
+                { name: "India", sub: "", slug: 'in', langCode: 'en' }, // Primary language for corporate site
+                { name: "Indonesia", sub: "", slug: 'id', langCode: 'id' },
+                { name: "Ireland", sub: "", slug: 'ie', langCode: 'en' },
+                { name: "Italy", sub: "Italia", slug: 'it', langCode: 'it' },
+                { name: "Japan", sub: "日本", slug: 'jp', langCode: 'ja' },
+                { name: "Latvia", sub: "", slug: 'lv', langCode: 'lv' },
+                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma', langCode: 'fr' }, // Defaulting to French for Maghreb
+                { name: "Malaysia", sub: "", slug: 'my', langCode: 'ms' },
+                { name: "Mexico", sub: "México", slug: 'mx', langCode: 'es' },
+                { name: "Netherlands", sub: "", slug: 'nl', langCode: 'nl' },
+                { name: "Norway", sub: "", slug: 'no', langCode: 'no' },
+                { name: "Pakistan", sub: "", slug: 'pk', langCode: 'ur' },
+                { name: "Paraguay", sub: "", slug: 'py', langCode: 'es' },
+                { name: "Peru", sub: "Perú", slug: 'pe', langCode: 'es' },
+                { name: "Philippines", sub: "", slug: 'ph', langCode: 'en' },
+                { name: "Poland", sub: "", slug: 'pl', langCode: 'pl' },
+                { name: "Portugal", sub: "", slug: 'pt', langCode: 'pt' },
+                { name: "Romania", sub: "", slug: 'ro', langCode: 'ro' },
+                { name: "Saudi Arabia", sub: "", slug: 'sa', langCode: 'ar' },
+                { name: "Serbia", sub: "", slug: 'rs', langCode: 'sr' },
+                { name: "Singapore", sub: "", slug: 'sg', langCode: 'en' },
+                { name: "Slovakia", sub: "", slug: 'sk', langCode: 'sk' },
+                { name: "South Africa", sub: "", slug: 'za', langCode: 'en' },
+                { name: "South Korea", sub: "", slug: 'kr', langCode: 'ko' },
+                { name: "Spain", sub: "España", slug: 'es', langCode: 'es' },
+                { name: "Sweden", sub: "Sverige", slug: 'se', langCode: 'sv' },
+                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch', langCode: 'fr' }, // Defaulting to French for Swiss French option
+                { name: "Taiwan", sub: "", slug: 'tw', langCode: 'zh-TW' }, // Traditional Chinese
+                { name: "Thailand", sub: "", slug: 'th', langCode: 'th' },
+                { name: "Turkey", sub: "Türkiye", slug: 'tr', langCode: 'tr' },
+                { name: "Ukraine", sub: "", slug: 'ua', langCode: 'uk' },
+                { name: "United Kingdom", sub: "", slug: 'uk', langCode: 'en' },
+                { name: "United States of America", sub: "", slug: 'us', langCode: 'en' },
+                { name: "Venezuela", sub: "", slug: 've', langCode: 'es' },
+                { name: "Vietnam", sub: "", slug: 'vn', langCode: 'vi' },
             ];
             
             // Generate a list of all valid slugs for path checking
             const VALID_SLUGS = countries.map(c => c.slug).filter(s => s !== 'global');
+
+            // --- Google Translate Functionality ---
+            
+            /**
+             * Finds the hidden Google Translate select box and sets the language.
+             * This relies on the Google Translate Element being initialized and loaded.
+             * @param {string} langCode - The target ISO 639-1 language code (e.g., 'es', 'fr', 'en').
+             */
+            function translatePage(langCode) {
+                // The Google Translate widget creates a select box inside the placeholder div.
+                const translateSelect = document.querySelector('#google_translate_element select');
+                
+                if (translateSelect) {
+                    translateSelect.value = langCode;
+                    // Create and dispatch a 'change' event to trigger the translation
+                    translateSelect.dispatchEvent(new Event('change'));
+                } else {
+                    // Try again in 100ms if not initialized yet (common issue with async loading)
+                    setTimeout(() => {
+                        translatePage(langCode);
+                    }, 100);
+                }
+            }
+
 
             // --- General Elements ---
             const messageBox = document.getElementById('message-box');
@@ -547,8 +606,8 @@
                 }
             }
             
-            // --- URL Path Manipulation Logic ---
-            function setCountryPath(newSlug) {
+            // --- URL Path and Translation Logic ---
+            function setCountryPath(newSlug, newLangCode) {
                 const currentPath = window.location.pathname;
                 
                 // 1. Clean path segments (remove empty strings from leading/trailing slashes)
@@ -560,11 +619,12 @@
                                     ? pathSegments[0] 
                                     : null;
 
-                if (newSlug === 'global') {
-                    // Remove slug if one exists
+                if (newSlug === 'global' || newLangCode === 'en') {
+                    // Remove slug if one exists and reset translation to English
                     if (currentSlug) {
                         pathSegments.shift(); // Remove the slug
                     }
+                    translatePage('en');
                 } else {
                     // Set a specific country slug
                     if (currentSlug) {
@@ -574,28 +634,28 @@
                         // Prepend new slug
                         pathSegments.unshift(newSlug);
                     }
+                    translatePage(newLangCode);
                 }
                 
                 // Reconstruct the path, ensuring a leading slash
                 newPathname = '/' + pathSegments.join('/');
                 
-                // Normalize path to '/' if it became '//' or empty
+                // Normalize path
                 if (newPathname.length > 1 && newPathname.endsWith('/')) {
-                    // Optional: keep trailing slash if it was originally present, but simpler to always trim
                     newPathname = newPathname.replace(/\/+$/, '');
                 }
-                if (newPathname === '/') {
+                if (newPathname === '//') {
                     newPathname = '/';
                 }
 
                 // If path changed, use pushState to update the URL without refresh
                 if (newPathname !== currentPath) {
                     window.history.pushState({}, '', newPathname);
-                    alertMessage(`Region set to ${newSlug.toUpperCase()}. URL updated to: ${newPathname}`);
+                    alertMessage(`Region set to ${newSlug.toUpperCase()}. URL updated to: ${newPathname}. Content translated to ${newLangCode.toUpperCase()}.`);
                 } else if (newSlug === 'global') {
-                    alertMessage(`You are already in the Global view.`);
+                    alertMessage(`You are already in the Global (English) view.`);
                 } else {
-                    alertMessage(`Region is already set to ${newSlug.toUpperCase()}.`);
+                    alertMessage(`Region is already set to ${newSlug.toUpperCase()} (${newLangCode.toUpperCase()}).`);
                 }
 
                 closeOutModal();
@@ -783,10 +843,11 @@
                 link.innerHTML = content;
                 link.className = className;
                 
-                // Add the new dynamic path change handler
+                // Add the new dynamic path change and translation handler
                 link.onclick = (e) => {
                     e.preventDefault();
-                    setCountryPath(country.slug); 
+                    // Pass both the slug and the language code
+                    setCountryPath(country.slug, country.langCode); 
                 };
 
                 countryListContainer.appendChild(link);
