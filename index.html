@@ -193,7 +193,7 @@
                             Every day, across every continent, confusion destroys value, quality, and human life. It's not counterfeiting—it's misidentification, relabeling, and misunderstanding. The global clarity problem is enormous. Our 100% genuine answer is preventable.
                         </p>
                     </div>
-                    <!-- Right Box (Updated: Removed p-8 and centering classes) -->
+                    <!-- Right Box (Full-bleed image box) -->
                     <div id="content-box" class="content-box-border-style rounded-lg flex h-full overflow-hidden"> 
                         <!-- Content Logo (Updated: Added w-full, h-full, object-cover, and rounded-lg) -->
                         <img id="content-logo-img" class="content-logo-border w-full h-full object-cover rounded-lg" alt="Kare Image Placeholder" onerror="this.outerHTML = '<span class=\'text-6xl font-extrabold text-klyr-red\'>KLYR™</span>';">
@@ -218,7 +218,7 @@
                     <!-- Card 1: Food & Beverage -->
                     <div class="rounded-xl crisis-card-style p-6 text-center">
                         <h3 class="text-sm font-bold text-klyr-dark mb-4">Food & Beverage</h3>
-                        <div class="text-5xl font-extrabold text-klyr-red mb-4">100M+</div>
+                        <div class="text-5xl font-extrabold text-klyr-red mb-4">100+</div>
                         <p class="text-sm text-gray-600">
                             Hundreds of recalls each year. Billions of units destroyed.
                         </p>
@@ -419,63 +419,66 @@
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- Global Data (Countries) ---
+            // Added 'slug' property to each country for dynamic URL path segments
             const countries = [
-                { name: "Global", sub: "🌎", isGlobal: true },
-                { name: "Argentina", sub: "" },
-                { name: "Australia & New Zealand", sub: "" },
-                { name: "Belgium", sub: "" },
-                { name: "Brazil", sub: "Brasil" },
-                { name: "Canada", sub: "(English)" },
-                { name: "Canada", sub: "Le Canada (Français)" },
-                { name: "Central America & Caribbean", sub: "América Central y el Caribe" },
-                { name: "Chile", sub: "" },
-                { name: "China", sub: "中国" },
-                { name: "Colombia", sub: "" },
-                { name: "Croatia", sub: "" },
-                { name: "Czech Republic", sub: "" },
-                { name: "Ecuador", sub: "" },
-                { name: "Finland", sub: "" },
-                { name: "France", sub: "" },
-                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz" },
-                { name: "Greece", sub: "" },
-                { name: "Hungary", sub: "" },
-                { name: "India", sub: "" },
-                { name: "Indonesia", sub: "" },
-                { name: "Ireland", sub: "" },
-                { name: "Italy", sub: "Italia" },
-                { name: "Japan", sub: "日本" },
-                { name: "Latvia", sub: "" },
-                { name: "Maghreb", sub: "Le Maghreb" },
-                { name: "Malaysia", sub: "" },
-                { name: "Mexico", sub: "México" },
-                { name: "Netherlands", sub: "" },
-                { name: "Norway", sub: "" },
-                { name: "Pakistan", sub: "" },
-                { name: "Paraguay", sub: "" },
-                { name: "Peru", sub: "Perú" },
-                { name: "Philippines", sub: "" },
-                { name: "Poland", sub: "" },
-                { name: "Portugal", sub: "" },
-                { name: "Romania", sub: "" },
-                { name: "Saudi Arabia", sub: "" },
-                { name: "Serbia", sub: "" },
-                { name: "Singapore", sub: "" },
-                { name: "Slovakia", sub: "" },
-                { name: "South Africa", sub: "" },
-                { name: "South Korea", sub: "" },
-                { name: "Spain", sub: "España" },
-                { name: "Sweden", sub: "Sverige" },
-                { name: "Switzerland", sub: "Suisse (Français)" },
-                { name: "Taiwan", sub: "" },
-                { name: "Thailand", sub: "" },
-                { name: "Turkey", sub: "Türkiye" },
-                { name: "Ukraine", sub: "" },
-                { name: "United Kingdom", sub: "" },
-                { name: "United States of America", sub: "" },
-                { name: "Venezuela", sub: "" },
-                { name: "Vietnam", sub: "" },
+                { name: "Global", sub: "🌎", isGlobal: true, slug: 'global' },
+                { name: "Argentina", sub: "", slug: 'ar' },
+                { name: "Australia & New Zealand", sub: "", slug: 'au' },
+                { name: "Belgium", sub: "", slug: 'be' },
+                { name: "Brazil", sub: "Brasil", slug: 'br' },
+                { name: "Canada", sub: "(English)", slug: 'ca' },
+                { name: "Canada", sub: "Le Canada (Français)", slug: 'qc' },
+                { name: "Central America & Caribbean", sub: "América Central y el Caribe", slug: 'cb' },
+                { name: "Chile", sub: "", slug: 'cl' },
+                { name: "China", sub: "中国", slug: 'cn' },
+                { name: "Colombia", sub: "", slug: 'co' },
+                { name: "Croatia", sub: "", slug: 'hr' },
+                { name: "Czech Republic", sub: "", slug: 'cz' },
+                { name: "Ecuador", sub: "", slug: 'ec' },
+                { name: "Finland", sub: "", slug: 'fi' },
+                { name: "France", sub: "", slug: 'fr' },
+                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz", slug: 'de' },
+                { name: "Greece", sub: "", slug: 'gr' },
+                { name: "Hungary", sub: "", slug: 'hu' },
+                { name: "India", sub: "", slug: 'in' },
+                { name: "Indonesia", sub: "", slug: 'id' },
+                { name: "Ireland", sub: "", slug: 'ie' },
+                { name: "Italy", sub: "Italia", slug: 'it' },
+                { name: "Japan", sub: "日本", slug: 'jp' },
+                { name: "Latvia", sub: "", slug: 'lv' },
+                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma' },
+                { name: "Malaysia", sub: "", slug: 'my' },
+                { name: "Mexico", sub: "México", slug: 'mx' },
+                { name: "Netherlands", sub: "", slug: 'nl' },
+                { name: "Norway", sub: "", slug: 'no' },
+                { name: "Pakistan", sub: "", slug: 'pk' },
+                { name: "Paraguay", sub: "", slug: 'py' },
+                { name: "Peru", sub: "Perú", slug: 'pe' },
+                { name: "Philippines", sub: "", slug: 'ph' },
+                { name: "Poland", sub: "", slug: 'pl' },
+                { name: "Portugal", sub: "", slug: 'pt' },
+                { name: "Romania", sub: "", slug: 'ro' },
+                { name: "Saudi Arabia", sub: "", slug: 'sa' },
+                { name: "Serbia", sub: "", slug: 'rs' },
+                { name: "Singapore", sub: "", slug: 'sg' },
+                { name: "Slovakia", sub: "", slug: 'sk' },
+                { name: "South Africa", sub: "", slug: 'za' },
+                { name: "South Korea", sub: "", slug: 'kr' },
+                { name: "Spain", sub: "España", slug: 'es' },
+                { name: "Sweden", sub: "Sverige", slug: 'se' },
+                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch' },
+                { name: "Taiwan", sub: "", slug: 'tw' },
+                { name: "Thailand", sub: "", slug: 'th' },
+                { name: "Turkey", sub: "Türkiye", slug: 'tr' },
+                { name: "Ukraine", sub: "", slug: 'ua' },
+                { name: "United Kingdom", sub: "", slug: 'uk' },
+                { name: "United States of America", sub: "", slug: 'us' },
+                { name: "Venezuela", sub: "", slug: 've' },
+                { name: "Vietnam", sub: "", slug: 'vn' },
             ];
-
+            
+            // Generate a list of all valid slugs for path checking
+            const VALID_SLUGS = countries.map(c => c.slug).filter(s => s !== 'global');
 
             // --- General Elements ---
             const messageBox = document.getElementById('message-box');
@@ -484,7 +487,6 @@
             const LOGO_TEXT = 'KLYR™';
             const NAV_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png'; // Original Logo URL for Nav
             const CONTENT_IMG_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/Kare.png'; // New URL for the Hero Box (Kare image)
-            // UPDATED: Removed p-8 (padding) and centering classes (justify-center, items-center), added overflow-hidden to clip image.
             const CONTENT_BOX_CLASSES = 'content-box-border-style rounded-lg flex h-full overflow-hidden'; 
             
             const navLogoImg = document.getElementById('nav-logo-img');
@@ -521,36 +523,6 @@
             const mobileLinks = mobileMenu.querySelectorAll('a'); 
 
 
-            // --- Initialization Functions ---
-
-            // Apply Content Box Classes
-            if (contentBox) {
-                // This ensures the custom CSS style variable for the border thickness is respected
-                contentBox.className = CONTENT_BOX_CLASSES; 
-            }
-
-            // Populate the Logo in two locations
-            if (navLogoImg) {
-                navLogoImg.src = NAV_LOGO_URL; // Uses the original KLYR logo
-                navLogoImg.alt = LOGO_TEXT + ' Logo (Navigation)';
-            }
-            if (contentLogoImg) {
-                contentLogoImg.src = CONTENT_IMG_URL; // Uses the new Kare image
-                contentLogoImg.alt = 'Kare Image Placeholder';
-            }
-
-            // Populate Country Select Dropdown for the Beta Form
-            function populateCountryDropdown() {
-                countries.filter(c => !c.isGlobal).forEach(country => {
-                    const option = document.createElement('option');
-                    option.value = country.name;
-                    option.textContent = country.name + (country.sub ? ` (${country.sub})` : '');
-                    countrySelect.appendChild(option);
-                });
-            }
-            populateCountryDropdown();
-
-            
             // --- Helper Functions ---
 
             // Custom alert message function (since we can't use alert())
@@ -574,6 +546,92 @@
                     }, 3000);
                 }
             }
+            
+            // --- URL Path Manipulation Logic ---
+            function setCountryPath(newSlug) {
+                const currentPath = window.location.pathname;
+                
+                // 1. Clean path segments (remove empty strings from leading/trailing slashes)
+                let pathSegments = currentPath.split('/').filter(p => p.length > 0);
+                let newPathname;
+                
+                // Check if the current path already starts with a known country slug
+                const currentSlug = pathSegments.length > 0 && VALID_SLUGS.includes(pathSegments[0]) 
+                                    ? pathSegments[0] 
+                                    : null;
+
+                if (newSlug === 'global') {
+                    // Remove slug if one exists
+                    if (currentSlug) {
+                        pathSegments.shift(); // Remove the slug
+                    }
+                } else {
+                    // Set a specific country slug
+                    if (currentSlug) {
+                        // Replace existing slug
+                        pathSegments[0] = newSlug;
+                    } else {
+                        // Prepend new slug
+                        pathSegments.unshift(newSlug);
+                    }
+                }
+                
+                // Reconstruct the path, ensuring a leading slash
+                newPathname = '/' + pathSegments.join('/');
+                
+                // Normalize path to '/' if it became '//' or empty
+                if (newPathname.length > 1 && newPathname.endsWith('/')) {
+                    // Optional: keep trailing slash if it was originally present, but simpler to always trim
+                    newPathname = newPathname.replace(/\/+$/, '');
+                }
+                if (newPathname === '/') {
+                    newPathname = '/';
+                }
+
+                // If path changed, use pushState to update the URL without refresh
+                if (newPathname !== currentPath) {
+                    window.history.pushState({}, '', newPathname);
+                    alertMessage(`Region set to ${newSlug.toUpperCase()}. URL updated to: ${newPathname}`);
+                } else if (newSlug === 'global') {
+                    alertMessage(`You are already in the Global view.`);
+                } else {
+                    alertMessage(`Region is already set to ${newSlug.toUpperCase()}.`);
+                }
+
+                closeOutModal();
+            }
+
+
+            // --- Initialization Functions ---
+
+            // Apply Content Box Classes
+            if (contentBox) {
+                // This ensures the custom CSS style variable for the border thickness is respected
+                contentBox.className = CONTENT_BOX_CLASSES; 
+            }
+
+            // Populate the Logo in two locations
+            if (navLogoImg) {
+                navLogoImg.src = NAV_LOGO_URL; // Uses the original KLYR logo
+                navLogoImg.alt = LOGO_TEXT + ' Logo (Navigation)';
+            }
+            if (contentLogoImg) {
+                contentLogoImg.src = CONTENT_IMG_URL; // Uses the new Kare image
+                contentLogoImg.alt = 'Kare Image Placeholder';
+            }
+
+            // Populate Country Select Dropdown for the Beta Form
+            function populateCountryDropdown() {
+                // Filter out the 'Global' entry for the form dropdown
+                countries.filter(c => !c.isGlobal).forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.slug; // Use slug as the value
+                    option.textContent = country.name + (country.sub ? ` (${country.sub})` : '');
+                    countrySelect.appendChild(option);
+                });
+            }
+            populateCountryDropdown();
+
             
             // --- Page Routing Logic ---
 
@@ -713,7 +771,8 @@
                 
                 let content = country.name;
                 let className = 'text-klyr-dark text-sm hover:text-klyr-red transition duration-150';
-
+                
+                // Format the text content for the modal
                 if (country.isGlobal) {
                     content = `<span class="font-bold">${country.name}</span> <span class="text-sm text-gray-500">${country.sub}</span>`;
                     className = 'font-bold block text-klyr-dark hover:text-klyr-red transition duration-150';
@@ -723,11 +782,11 @@
                 
                 link.innerHTML = content;
                 link.className = className;
+                
+                // Add the new dynamic path change handler
                 link.onclick = (e) => {
                     e.preventDefault();
-                    const selectedName = country.name === 'Global' ? 'Global' : `${country.name}${country.sub ? ' (' + country.sub + ')' : ''}`;
-                    alertMessage('Region set to ' + selectedName);
-                    closeOutModal();
+                    setCountryPath(country.slug); 
                 };
 
                 countryListContainer.appendChild(link);
