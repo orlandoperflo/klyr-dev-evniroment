@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLYR - Join the Clarity Movement</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome (for social media, globe, menu, and exit icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // PRIMARY COLOR VARIABLE
+                        'klyr-red': '#E72F3C',
+                        // DARK TEXT COLOR VARIABLE
+                        'klyr-dark': '#1F2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .skiptranslate {
+            display: none!important;
+        }
+        /* ===================================================================
+        USER EDITABLE: GLOBAL WEBSITE MAX WIDTH VARIABLES
+        =================================================================== */
+        :root {
+            /* Max width for the primary content sections */
+            --site-max-width: 1100px; 
+            /* Max width for header/footer sections (wider) */
+            --nav-footer-max-width: 2000px; 
+
+            /* ===============================================================
+            USER EDITABLE: CRISIS CARD STYLING VARIABLES
+            =============================================================== */
+            --card-bg-color: #f9f9f9; 
+            --card-shadow: 0 0px 0px rgba(0, 0, 0, 0.08);
+
+            /* ===============================================================
+            USER EDITABLE: LOGO BORDER STYLING VARIABLES (Applied to Hero Logo)
+            =============================================================== */
+            /* Format: <size> <style> <color> (e.g., 20px solid #E72F3C) */
+            --logo-border-style: 20px solid var(--klyr-red);
+
+            /* ===============================================================
+            USER EDITABLE: CONTENT BOX BORDER THICKNESS (SIZE)
+            =============================================================== */
+            /* Control border size for the large logo box (e.g., 2px, 8px, 20px) */
+            --box-border-thickness: 4px; 
+        }
+
+        /* Custom class for standard content width */
+        .max-w-site {
+            max-width: var(--site-max-width);
+        }
+
+        /* Custom class for header and footer content width */
+        .max-w-super-wide {
+            max-width: var(--nav-footer-max-width);
+        }
+
+        /* Custom class applying background and shadow variables to the crisis cards */
+        .crisis-card-style {
+            background-color: var(--card-bg-color);
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Custom class for the content logo border */
+        .content-logo-border {
+            /* This border is now applied directly to the image */
+            border: var(--logo-border-style) !important;
+            /* Ensures the image is correctly clipped with the border radius */
+            display: block; 
+        }
+        
+        /* Custom class for the Content Box border style using the new variable */
+        #content-box.content-box-border-style {
+            /* Targeting the ID and class together for maximum specificity */
+            border: var(--box-border-thickness) solid var(--klyr-red) !important;
+        }
+
+        /* Modal specific styling to handle transitions */
+        .modal-transition {
+            transition: opacity 300ms ease-out, transform 300ms ease-out;
+        }
+
+        /* Ensuring Inter font loads smoothly */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+        }
+        /* Custom form input styles */
+        .klyr-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB; /* light gray */
+            border-radius: 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .klyr-input:focus {
+            outline: none;
+            border-color: #E72F3C; /* klyr-red */
+            box-shadow: 0 0 0 3px rgba(231, 47, 60, 0.2);
+        }
+        
+        /* =================================================================== */
+        /* CRITICAL: HIDES ALL GOOGLE TRANSLATE UI ELEMENTS */
+        /* =================================================================== */
+        #google_translate_element, 
+        .goog-te-gadget,
+        .goog-te-banner-frame {
+            /* Hides the placeholder div, the widget, and the top banner */
+            display: none !important;
+            visibility: hidden !important;
+        }
+        /* CRITICAL: Fixes body positioning issues caused by the hidden banner */
+        body {
+            top: 0px !important; 
+            position: relative !important; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =================================================================== -->
+    <!-- HIDDEN GOOGLE TRANSLATE ELEMENT & SCRIPT -->
+    <!-- This element initializes the translation service but is hidden by CSS. -->
+    <!-- =================================================================== -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        // Standard function required by Google Translate widget
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                // Using 'inline' layout to access the select box but keeping it hidden.
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- =================================================================== -->
+
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo - Now a clickable element to return to the home page -->
+                <div id="nav-logo-link" class="flex-shrink-0 cursor-pointer">
+                    <img id="nav-logo-img" class="h-6 w-auto" alt="KLYR™ Logo" onerror="this.outerHTML = '<span class=\'text-xl font-bold text-klyr-red\'>KLYR™</span>';">
+                </div>
+                
+                <!-- Right side: Global Icon (Desktop), Desktop Nav, and Mobile Button -->
+                <div class="flex items-center space-x-4">
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                        <a href="#" class="hover:text-klyr-red transition duration-150">THE SOLUTION</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">COST OF CONFUSION</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">CASE STUDIES</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">TECHNOLOGY</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">IMPACT</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">PRESS</a>
+                        <!-- Link href="#beta" is the target for the JS navigation -->
+                        <a href="#beta" class="hover:text-klyr-red transition duration-150 font-semibold">JOIN THE MOVEMENT</a>
+                    </nav>
+
+                    <!-- Global Icon - Triggers the country modal (Visible ONLY on Desktop) -->
+                    <i id="global-icon-desktop" class="fas fa-globe text-gray-500 hover:text-klyr-red cursor-pointer transition md:ml-4 hidden md:block"></i>
+
+                    <!-- Mobile Menu Button (Hamburger) -->
+                    <button id="mobile-menu-btn" type="button" class="md:hidden text-gray-500 hover:text-klyr-red p-2 rounded-md focus:outline-none -mr-2">
+                        <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Container (Sidebar Slide-out Panel) -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-[90] transform translate-x-full transition-transform duration-300 md:hidden">
+        <!-- Header area for the mobile menu, only containing the close button -->
+        <div class="flex justify-end items-center h-16 border-b border-gray-100 px-6">
+            <!-- Close Button for Mobile Menu -->
+            <button id="mobile-close-btn" type="button" class="text-gray-500 hover:text-klyr-red p-2 rounded-md focus:outline-none">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <nav class="py-4 space-y-1 px-6">
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">THE SOLUTION</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">COST OF CONFUSION</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">CASE STUDIES</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">TECHNOLOGY</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">IMPACT</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">PRESS</a>
+            <!-- Link href="#beta" is the target for the JS navigation -->
+            <a href="#beta" class="block text-base font-semibold text-klyr-red hover:text-klyr-red py-3 border-b border-gray-100">JOIN THE MOVEMENT</a>
+            
+            <!-- MOBILE GLOBE LINK (Triggers the modal) -->
+            <a id="global-link-mobile" href="#" class="flex items-center space-x-3 block text-base font-medium text-klyr-dark hover:text-klyr-red py-3">
+                <i class="fas fa-globe text-lg"></i>
+                <span>Select Region / Language</span>
+            </a>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Wrapper for ALL ORIGINAL HOMEPAGE CONTENT -->
+        <div id="homepage-content">
+            <!-- Section 1: Hero - Clarity Technology Heading + Image/Content Grid -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+                
+                <!-- PRIMARY HEADING (Size adjusted, now left-aligned) -->
+                <h1 class="text-left text-3xl md:text-5xl font-extrabold tracking-tight leading-snug text-klyr-dark mb-12">
+                    THE WORLD'S FIRST <br> CLARITY TECHNOLOGY
+                </h1>
+
+                <!-- Reversed Grid (Content Left, Image Right) -->
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- Column 1 (Content - Now Left) -->
+                    <div class="space-y-6">
+                        
+                        <!-- UPDATED Content Paragraphs -->
+                        <p class="text-gray-600 text-lg">
+                           <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> identifies each product by its visual fingerprint — the microscopic patterns of texture, color, and geometry that make it unique. Our advanced AI recognizes these signatures instantly, verifying authenticity and correctness before confusion can occur.
+                        </p>
+                        <p class="text-gray-600 text-lg">
+                            <span class="text-klyr-red">KLYR</span> learns continuously. Each scan strengthens a global network of clarity that protects consumers, brands, and supply chains.
+                        </p>
+                    </div>
+
+                    <!-- Column 2 (Image - Now Right) -->
+                    <div id="content-box" class="content-box-border-style rounded-lg flex h-full overflow-hidden"> 
+                        <img id="content-logo-img" class="content-logo-border w-full h-full object-cover rounded-lg" alt="Kare Image Placeholder" onerror="this.outerHTML = '<span class=\'text-6xl font-extrabold text-klyr-red\'>KLYR™</span>';">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Centered Subheading (Replaces KEY SYSTEMS image section) -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 md:pt-12 md:pb-16 text-center">
+                <h2 class="text-xl md:text-3xl font-bold tracking-tight text-klyr-dark">
+                    EVERY PRODUCT, PACKAGE AND DOSE - VERIFIED IN SECONDS
+                </h2>
+            </section>
+            
+            <!-- NEW SECTION 2.5: Feature Cards (UPDATED AS REQUESTED) -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-24">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Description and Red Border Removed -->
+                    <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-klyr-dark">Visual Fingerprint Recognition</h3>
+                    </div>
+                    <!-- Card 2: Description and Red Border Removed -->
+                    <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-klyr-dark">Real-Time AI Verification</h3>
+                    </div>
+                    <!-- Card 3: Description and Red Border Removed -->
+                    <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-klyr-dark">Blockchain Clarity Record</h3>
+                    </div>
+                    <!-- Card 4: Description and Red Border Removed -->
+                    <div class="bg-gray-100 p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-klyr-dark">Seamless Integration with Phones, Cameras & Industry Hardware</h3>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Red Estimate Banner -->
+            <section class="bg-klyr-red py-10">
+                <div class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+                    <p class="text-xl sm:text-2xl mb-1">
+                      KLYR stops confusion before it starts — saving lives, money, and trust.
+                    </p>
+                    
+                </div>
+            </section>
+            
+            <!-- NEW SECTION 2.5: Dual CTA Buttons (MOVED BELOW BANNER AS REQUESTED) -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">
+                <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <!-- Button 1: Request Demo (KLYR Red) -->
+                    <a href="#" class="w-full sm:w-auto">
+                        <button class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wider w-full sm:w-auto">
+                            See Real Case Studies
+                        </button>
+                    </a>
+                    <!-- Button 2: Partner (KLYR Red) -->
+                    <a href="#" class="w-full sm:w-auto">
+                        <button class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wider w-full sm:w-auto">
+                           Join the Beta
+                        </button>
+                    </a>
+                </div>
+            </section>
+            
+        </div>
+        <!-- END homepage-content -->
+
+
+        <!-- BETA SIGN-UP PAGE (Kept for URL routing /beta) -->
+        <section id="beta-signup-page" class="hidden max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <!-- Form Content -->
+            <div id="beta-form-container">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                    Join the Global <span class="text-klyr-red">Clarity Movement</span>
+                </h1>
+                <h2 class="text-xl text-gray-600 mb-8">
+                    Help stop the world’s largest silent catastrophe — confusion itself.
+                </h2>
+                
+                <p class="text-lg text-gray-700 mb-6">
+                    <!-- KLYR is red, ™ is dark -->
+                    <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> is now entering its global beta phase. We’re inviting consumers, brands, and industry leaders to join the mission to teach clarity to the world. Every scan, every test, every idea helps the AI learn and protect more lives. Be among the first to shape a future without confusion.
+                </p>
+
+                <!-- Registration Form: Background changed to bg-white -->
+                <form id="beta-registration-form" class="space-y-6 bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-gray-100">
+                    <div>
+                        <label for="full_name" class="block text-sm font-medium text-klyr-dark mb-1">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" required class="klyr-input" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-klyr-dark mb-1">Email</label>
+                        <input type="email" id="email" name="email" required class="klyr-input" placeholder="name@company.com">
+                    </div>
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-klyr-dark mb-1">Country</label>
+                        <select id="country-select" name="country" required class="klyr-input appearance-none">
+                            <option value="" disabled selected>Select your country</option>
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="interest" class="block text-sm font-medium text-klyr-dark mb-1">Interest Category</label>
+                        <select id="interest" name="interest" required class="klyr-input appearance-none">
+                            <option value="" disabled selected>Choose a category</option>
+                            <option value="consumer">Consumer</option>
+                            <option value="brand">Brand Partner</option>
+                            <option value="investor">Investor or Collaborator</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 pt-4">
+                        <button type="submit" class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded shadow-lg transition duration-300 transform hover:scale-[1.02] uppercase tracking-wider flex-1">
+                            Register Now
+                        </button>
+                        <button type="button" id="share-movement-btn" class="bg-gray-200 hover:bg-gray-300 text-klyr-dark font-semibold py-3 px-6 rounded shadow transition duration-300 transform hover:scale-[1.02] uppercase tracking-wider flex-1">
+                            Share This Movement
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Confirmation Message (Updated to use KLYR colors) -->
+            <div id="beta-confirmation-message" class="hidden text-center bg-white p-10 rounded-xl border-4 border-klyr-red shadow-2xl">
+                <i class="fas fa-check-circle text-6xl text-klyr-red mb-6 animate-pulse"></i>
+                <h3 class="text-3xl font-extrabold text-klyr-dark mb-4">Registration Complete!</h3>
+                <p class="text-xl text-gray-700 font-medium italic">
+                    “Welcome to the Clarity Generation. Together we’re making history.”
+                </p>
+                <button type="button" id="back-to-home-btn" class="mt-8 bg-klyr-dark hover:bg-gray-700 text-white font-bold py-3 px-6 rounded shadow transition duration-300 uppercase tracking-wider">
+                    Back to Homepage
+                </button>
+            </div>
+        </section>
+        <!-- END beta-signup-page -->
+
+    </main>
+
+    <!-- Country Selection Modal -->
+    <div id="country-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] hidden opacity-0 modal-transition">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-4xl p-8 relative transform scale-95 modal-transition">
+            <!-- Close Button (Top Left) -->
+            <button id="close-modal-btn" class="absolute top-6 left-6 text-gray-500 hover:text-klyr-red transition duration-150">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <!-- Multi-column Country List Container -->
+            <div id="country-list-container" class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-4 max-h-[70vh] overflow-y-auto pt-4 pb-2">
+                <!-- Countries will be rendered here by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer - KLYR red styling preserved -->
+    <footer class="bg-gray-50 border-t border-gray-200 pt-12 pb-8">
+        <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Social Icons: Now explicitly klyr-red -->
+            <div class="flex justify-center space-x-6 mb-6">
+                <!-- Changed text-gray-400 to text-klyr-red for primary color -->
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
+            </div>
+
+            <!-- Copyright: KLYR in red -->
+            <p class="text-sm text-klyr-dark mb-2" id="copyright-text">
+                &copy;2025 <span class="text-klyr-red">KLYR</span> Sciences Inc. All rights reserved.
+            </p>
+            
+            <!-- Trademarks: KLYR in red, ™ in dark -->
+            <p class="text-xs text-klyr-dark mb-6">
+                <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">MyKLYR</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">KLYRSCAN</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">KLYRCAM</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">KLYRCLOUD</span><span class="text-klyr-dark">™</span>, 
+                and <span class="text-klyr-red">KLYRAI</span><span class="text-klyr-dark">™</span> are trademarks of <span class="text-klyr-red">KLYR</span>™ Sciences Inc.
+            </p>
+
+            <!-- Policy Links: Now dark text color -->
+            <div class="flex justify-center space-x-4 text-xs text-klyr-dark">
+                <a href="#" class="hover:text-klyr-red transition duration-150">Privacy Policy</a>
+                <span>|</span>
+                <a href="#" class="hover:text-klyr-red transition duration-150">Terms of Use</a>
+                <span>|</span>
+                <a href="#" class="hover:text-klyr-red transition duration-150">Contact Us</a>
+            </div>
+            
+            <!-- Last Line: Now dark text color -->
+            <p class="text-xs text-klyr-dark mt-2">
+                Advancing clarity through technology.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Pure JavaScript for Interaction, Logo Setup, and Page Routing -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Global Data (Countries & Languages) ---
+            const countries = [
+                { name: "Global", sub: "🌎", isGlobal: true, slug: 'global', langCode: 'en' },
+                { name: "Argentina", sub: "", slug: 'ar', langCode: 'es' },
+                { name: "Australia & New Zealand", sub: "", slug: 'au', langCode: 'en' },
+                { name: "Belgium", sub: "", slug: 'be', langCode: 'fr' },
+                { name: "Brazil", sub: "Brasil", slug: 'br', langCode: 'pt' },
+                { name: "Canada", sub: "(English)", slug: 'ca', langCode: 'en' },
+                { name: "Canada", sub: "Le Canada (Français)", slug: 'qc', langCode: 'fr' },
+                { name: "Central America & Caribbean", sub: "América Central y el Caribe", slug: 'cb', langCode: 'es' },
+                { name: "Chile", sub: "", slug: 'cl', langCode: 'es' },
+                { name: "China", sub: "中国", slug: 'cn', langCode: 'zh-CN' },
+                { name: "Colombia", sub: "", slug: 'co', langCode: 'es' },
+                { name: "Croatia", sub: "", slug: 'hr', langCode: 'hr' },
+                { name: "Czech Republic", sub: "", slug: 'cz', langCode: 'cs' },
+                { name: "Ecuador", sub: "", slug: 'ec', langCode: 'es' },
+                { name: "Finland", sub: "", slug: 'fi', langCode: 'fi' },
+                { name: "France", sub: "", slug: 'fr', langCode: 'fr' },
+                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz", slug: 'de', langCode: 'de' },
+                { name: "Greece", sub: "", slug: 'gr', langCode: 'el' },
+                { name: "Hungary", sub: "", slug: 'hu', langCode: 'hu' },
+                { name: "India", sub: "", slug: 'in', langCode: 'en' }, 
+                { name: "Indonesia", sub: "", slug: 'id', langCode: 'id' },
+                { name: "Ireland", sub: "", slug: 'ie', langCode: 'en' },
+                { name: "Italy", sub: "Italia", slug: 'it', langCode: 'it' },
+                { name: "Japan", sub: "日本", slug: 'jp', langCode: 'ja' },
+                { name: "Latvia", sub: "", slug: 'lv', langCode: 'lv' },
+                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma', langCode: 'fr' },
+                { name: "Malaysia", sub: "", slug: 'my', langCode: 'ms' },
+                { name: "Mexico", sub: "México", slug: 'mx', langCode: 'es' },
+                { name: "Netherlands", sub: "", slug: 'nl', langCode: 'nl' },
+                { name: "Norway", sub: "", slug: 'no', langCode: 'no' },
+                { name: "Pakistan", sub: "", slug: 'pk', langCode: 'ur' },
+                { name: "Paraguay", sub: "", slug: 'py', langCode: 'es' },
+                { name: "Peru", sub: "Perú", slug: 'pe', langCode: 'es' },
+                { name: "Philippines", sub: "", slug: 'ph', langCode: 'en' },
+                { name: "Poland", sub: "", slug: 'pl', langCode: 'pl' },
+                { name: "Portugal", sub: "", slug: 'pt', langCode: 'pt' },
+                { name: "Romania", sub: "", slug: 'ro', langCode: 'ro' },
+                { name: "Saudi Arabia", sub: "", slug: 'sa', langCode: 'ar' },
+                { name: "Serbia", sub: "", slug: 'rs', langCode: 'sr' },
+                { name: "Singapore", sub: "", slug: 'sg', langCode: 'en' },
+                { name: "Slovakia", sub: "", slug: 'sk', langCode: 'sk' },
+                { name: "South Africa", sub: "", slug: 'za', langCode: 'en' },
+                { name: "South Korea", sub: "", slug: 'kr', langCode: 'ko' },
+                { name: "Spain", sub: "España", slug: 'es', langCode: 'es' },
+                { name: "Sweden", sub: "Sverige", slug: 'se', langCode: 'sv' },
+                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch', langCode: 'fr' }, 
+                { name: "Taiwan", sub: "", slug: 'tw', langCode: 'zh-TW' }, 
+                { name: "Thailand", sub: "", slug: 'th', langCode: 'th' },
+                { name: "Turkey", sub: "Türkiye", slug: 'tr', langCode: 'tr' },
+                { name: "Ukraine", sub: "", slug: 'ua', langCode: 'uk' },
+                { name: "United Kingdom", sub: "", slug: 'uk', langCode: 'en' },
+                { name: "United States of America", sub: "", slug: 'us', langCode: 'en' },
+                { name: "Venezuela", sub: "", slug: 've', langCode: 'es' },
+                { name: "Vietnam", sub: "", slug: 'vn', langCode: 'vi' },
+            ];
+            
+            // Generate a list of all valid slugs for path checking
+            const VALID_SLUGS = countries.map(c => c.slug).filter(s => s !== 'global');
+            
+            // --- Google Translate Functionality ---
+            
+            /**
+             * Finds the hidden Google Translate select box and sets the language.
+             * This relies on the Google Translate Element being initialized and loaded.
+             * @param {string} langCode - The target ISO 639-1 language code (e.g., 'es', 'fr', 'en').
+             */
+            function translatePage(langCode) {
+                // The Google Translate widget creates a select box inside the placeholder div.
+                const translateSelect = document.querySelector('#google_translate_element select');
+                
+                if (translateSelect) {
+                    translateSelect.value = langCode;
+                    // Create and dispatch a 'change' event to trigger the translation
+                    translateSelect.dispatchEvent(new Event('change'));
+                } else {
+                    // Try again in 100ms if not initialized yet (common issue with async loading)
+                    setTimeout(() => {
+                        translatePage(langCode);
+                    }, 100);
+                }
+            }
+
+
+            // --- General Elements ---
+
+            // --- Logo & Styling Constants (Allowed to change URLs only) ---
+            const LOGO_TEXT = 'KLYR™';
+            const NAV_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png'; 
+            const CONTENT_IMG_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/Kare.png'; 
+            const CONTENT_BOX_CLASSES = 'content-box-border-style rounded-lg flex h-full overflow-hidden'; 
+            
+            const navLogoImg = document.getElementById('nav-logo-img');
+            const contentLogoImg = document.getElementById('content-logo-img');
+            const contentBox = document.getElementById('content-box');
+
+            // --- Page Routing Elements ---
+            const homepageContent = document.getElementById('homepage-content');
+            const betaSignupPage = document.getElementById('beta-signup-page');
+            const backToHomeBtn = document.getElementById('back-to-home-btn');
+            const navLogoLink = document.getElementById('nav-logo-link'); 
+            const joinMovementLinks = document.querySelectorAll('a[href="#beta"]'); 
+
+            // --- Form Elements ---
+            const countrySelect = document.getElementById('country-select');
+            const registrationForm = document.getElementById('beta-registration-form');
+            const formContainer = document.getElementById('beta-form-container');
+            const confirmationMessage = document.getElementById('beta-confirmation-message');
+            const shareMovementBtn = document.getElementById('share-movement-btn');
+            
+            
+            // --- Modal Elements ---
+            const countryModal = document.getElementById('country-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const countryListContainer = document.getElementById('country-list-container');
+            const modalContent = document.getElementById('modal-content');
+            const globalIconDesktop = document.getElementById('global-icon-desktop');
+            const globalLinkMobile = document.getElementById('global-link-mobile');
+
+            // --- Mobile Menu Elements ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileCloseBtn = document.getElementById('mobile-close-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = mobileMenu.querySelectorAll('a'); 
+            
+            
+            // --- Initialization & Setup ---
+
+            // Set the main logo images on load
+            navLogoImg.src = NAV_LOGO_URL;
+            contentLogoImg.src = CONTENT_IMG_URL;
+            
+            // Render Country List for Modal and Form
+            const renderCountries = () => {
+                countryListContainer.innerHTML = '';
+                countrySelect.innerHTML = '<option value="" disabled selected>Select your country</option>';
+
+                countries.forEach(country => {
+                    // 1. For the Modal
+                    const countryDiv = document.createElement('div');
+                    countryDiv.className = 'text-sm cursor-pointer hover:text-klyr-red transition duration-150 p-1';
+                    countryDiv.innerHTML = `<span class="">${country.name}</span> ${country.sub ? `<span class="text-gray-500 text-xs">(${country.sub})</span>` : ''}`;
+                    countryDiv.dataset.slug = country.slug;
+                    countryListContainer.appendChild(countryDiv);
+
+                    // 2. For the Beta Form Select
+                    const option = document.createElement('option');
+                    option.value = country.slug;
+                    option.textContent = country.name + (country.sub ? ` (${country.sub})` : '');
+                    countrySelect.appendChild(option);
+                });
+            };
+            renderCountries();
+
+
+            // --- Helper Functions ---
+            
+            /** Toggles visibility between homepage and signup page */
+            const navigateTo = (page) => {
+                window.scrollTo(0, 0); // Scroll to top on page change
+                if (page === 'home') {
+                    homepageContent.classList.remove('hidden');
+                    betaSignupPage.classList.add('hidden');
+                } else if (page === 'beta') {
+                    homepageContent.classList.add('hidden');
+                    betaSignupPage.classList.remove('hidden');
+                    formContainer.classList.remove('hidden');
+                    confirmationMessage.classList.add('hidden');
+                }
+            };
+            
+            /** * Updates the URL hash to reflect the current page/region.
+             * This uses hash routing which is safe in sandboxed environments.
+             */
+            const updateUrlPath = (path) => {
+                // Use window.location.hash for routing, which is safer in this environment.
+                // Remove leading '/' for hash path (e.g., '/beta' -> '#beta', '/' -> '#')
+                const hashPath = path === '/' ? '' : path.startsWith('/') ? path.substring(1) : path;
+                window.location.hash = hashPath;
+            };
+            
+            /** Cleans the form and shows the confirmation message */
+            const showConfirmation = () => {
+                registrationForm.reset();
+                formContainer.classList.add('hidden');
+                confirmationMessage.classList.remove('hidden');
+                updateUrlPath('/beta/registered');
+            };
+
+            // --- Modal Functions ---
+            const openModal = () => {
+                countryModal.classList.remove('hidden');
+                setTimeout(() => {
+                    countryModal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            };
+
+            const closeModal = () => {
+                countryModal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    countryModal.classList.add('hidden');
+                }, 300); // Matches the CSS transition duration
+            };
+            
+            // --- Mobile Menu Functions ---
+            const openMobileMenu = () => {
+                mobileMenu.classList.remove('translate-x-full');
+            };
+
+            const closeMobileMenu = () => {
+                mobileMenu.classList.add('translate-x-full');
+            };
+
+
+            // --- Event Listeners ---
+            
+            // Global Icon / Link Click (Open Modal)
+            [globalIconDesktop, globalLinkMobile].forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeMobileMenu(); 
+                    openModal();
+                });
+            });
+
+            // Modal Close Buttons
+            [closeModalBtn, countryModal].forEach(el => {
+                el.addEventListener('click', (e) => {
+                    // Only close if clicking the backdrop or the explicit close button
+                    if (e.target === countryModal || e.target === closeModalBtn || closeModalBtn.contains(e.target)) {
+                        closeModal();
+                    }
+                });
+            });
+
+            // Handle Country Selection in Modal
+            countryListContainer.addEventListener('click', (e) => {
+                const countryDiv = e.target.closest('div[data-slug]');
+                if (countryDiv) {
+                    const slug = countryDiv.dataset.slug;
+                    const selectedCountry = countries.find(c => c.slug === slug);
+
+                    if (selectedCountry) {
+                        // 1. Update URL path based on slug (e.g., /uk, /jp, /global)
+                        const path = slug === 'global' ? '/' : `/${slug}`;
+                        updateUrlPath(path);
+                        
+                        // 2. Trigger Google Translate
+                        translatePage(selectedCountry.langCode);
+
+                        // 3. Provide feedback (optional, but good practice)
+                        console.log(`Region set to: ${selectedCountry.name}. Language code: ${selectedCountry.langCode}`);
+                        
+                        // 4. Close the modal
+                        closeModal();
+                    }
+                }
+            });
+
+
+            // Mobile Menu Handlers
+            mobileMenuBtn.addEventListener('click', openMobileMenu);
+            mobileCloseBtn.addEventListener('click', closeMobileMenu);
+            // Close mobile menu if any link inside is clicked (simulating navigation)
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
+            // --- Page Routing Logic ---
+
+            // 1. Menu Links -> Navigate to Beta Page
+            joinMovementLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigateTo('beta');
+                    updateUrlPath('/beta');
+                    // Ensure mobile menu closes if navigating from mobile link
+                    if (link.closest('#mobile-menu')) {
+                        closeMobileMenu();
+                    }
+                });
+            });
+
+            // 2. Back to Home Button (Confirmation Page) -> Navigate to Home
+            backToHomeBtn.addEventListener('click', () => {
+                navigateTo('home');
+                updateUrlPath('/');
+            });
+            
+            // 3. Nav Logo Click -> Navigate to Home
+            navLogoLink.addEventListener('click', () => {
+                navigateTo('home');
+                updateUrlPath('/');
+            });
+            
+            // 4. Form Submission -> Show Confirmation
+            registrationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, this is where you'd submit data to a server/database.
+                showConfirmation();
+            });
+            
+            // 5. Share Button (Simulates copying a link)
+            shareMovementBtn.addEventListener('click', () => {
+                // messageBox variable removed. Using console.log instead of a UI element.
+                try {
+                    // Fallback for clipboard access in iframes
+                    const urlToCopy = window.location.origin + window.location.pathname + '#beta'; // Use hash for share link
+                    const tempInput = document.createElement('textarea');
+                    tempInput.value = urlToCopy;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    
+                    console.log(`Link copied to clipboard: ${urlToCopy}`);
+                } catch (err) {
+                    console.error(`Could not automatically copy. Link is: ${window.location.origin}/beta`, err);
+                }
+            });
+            
+            // --- Initial Path Setup (Using Hash Routing to avoid SecurityErrors) ---
+            // Get hash and remove leading '#'
+            const currentHash = window.location.hash.substring(1);
+
+            if (currentHash.startsWith('beta')) {
+                // If the hash is #beta or #beta/registered, show the signup page
+                navigateTo('beta');
+                if (currentHash.includes('registered')) {
+                    // If it's the registered hash, skip the form and show confirmation
+                    showConfirmation();
+                }
+            } else if (currentHash.length > 0) {
+                // Check if a country slug is in the hash (e.g., #uk, #jp)
+                const pathSegments = currentHash.split('/').filter(p => p.length > 0);
+                const slug = pathSegments[0];
+
+                if (VALID_SLUGS.includes(slug)) {
+                    const country = countries.find(c => c.slug === slug);
+                    if (country) {
+                        // Initiate translation for the detected country/language
+                        setTimeout(() => translatePage(country.langCode), 500);
+                    }
+                }
+                navigateTo('home');
+            } else {
+                navigateTo('home');
+            }
+        });
+    </script>
+</body>
+</html>
