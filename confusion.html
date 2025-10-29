@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLYR - Join the Clarity Movement</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome (for social media, globe, menu, and exit icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // PRIMARY COLOR VARIABLE
+                        'klyr-red': '#E72F3C',
+                        // DARK TEXT COLOR VARIABLE
+                        'klyr-dark': '#1F2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .skiptranslate {
+            display: none!important;
+        }
+        /* ===================================================================
+        USER EDITABLE: GLOBAL WEBSITE MAX WIDTH VARIABLES
+        =================================================================== */
+        :root {
+            /* Max width for the primary content sections */
+            --site-max-width: 1100px; 
+            /* Max width for header/footer sections (wider) */
+            --nav-footer-max-width: 2000px; 
+
+            /* ===============================================================
+            USER EDITABLE: CRISIS CARD STYLING VARIABLES
+            =============================================================== */
+            --card-bg-color: #f9f9f9; 
+            --card-shadow: 0 0px 0px rgba(0, 0, 0, 0.08);
+
+            /* ===============================================================
+            USER EDITABLE: LOGO BORDER STYLING VARIABLES (Applied to Hero Logo)
+            =============================================================== */
+            /* Format: <size> <style> <color> (e.g., 20px solid #E72F3C) */
+            --logo-border-style: 20px solid var(--klyr-red);
+
+            /* ===============================================================
+            USER EDITABLE: CONTENT BOX BORDER THICKNESS (SIZE)
+            =============================================================== */
+            /* Control border size for the large logo box (e.g., 2px, 8px, 20px) */
+            --box-border-thickness: 4px; 
+        }
+
+        /* Custom class for standard content width */
+        .max-w-site {
+            max-width: var(--site-max-width);
+        }
+
+        /* Custom class for header and footer content width */
+        .max-w-super-wide {
+            max-width: var(--nav-footer-max-width);
+        }
+
+        /* Custom class applying background and shadow variables to the crisis cards */
+        .crisis-card-style {
+            background-color: var(--card-bg-color);
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Custom class for the content logo border */
+        .content-logo-border {
+            /* This border is now applied directly to the image */
+            border: var(--logo-border-style) !important;
+            /* Ensures the image is correctly clipped with the border radius */
+            display: block; 
+        }
+        
+        /* Custom class for the Content Box border style using the new variable */
+        #content-box.content-box-border-style {
+            /* Targeting the ID and class together for maximum specificity */
+            border: var(--box-border-thickness) solid var(--klyr-red) !important;
+        }
+
+        /* Modal specific styling to handle transitions */
+        .modal-transition {
+            transition: opacity 300ms ease-out, transform 300ms ease-out;
+        }
+
+        /* Ensuring Inter font loads smoothly */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+        }
+        /* Custom form input styles */
+        .klyr-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB; /* light gray */
+            border-radius: 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .klyr-input:focus {
+            outline: none;
+            border-color: #E72F3C; /* klyr-red */
+            box-shadow: 0 0 0 3px rgba(231, 47, 60, 0.2);
+        }
+        
+        /* =================================================================== */
+        /* CRITICAL: HIDES ALL GOOGLE TRANSLATE UI ELEMENTS */
+        /* =================================================================== */
+        #google_translate_element, 
+        .goog-te-gadget,
+        .goog-te-banner-frame {
+            /* Hides the placeholder div, the widget, and the top banner */
+            display: none !important;
+            visibility: hidden !important;
+        }
+        /* CRITICAL: Fixes body positioning issues caused by the hidden banner */
+        body {
+            top: 0px !important; 
+            position: relative !important; 
+        }
+
+        /* =================================================================== */
+        /* FIX: Ensures cards align horizontally by normalizing description height */
+        /* =================================================================== */
+        @media (min-width: 768px) {
+            .description-alignment-fix {
+                /* Min-height large enough for 2 lines of text-lg */
+                min-height: 3.5rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =================================================================== -->
+    <!-- HIDDEN GOOGLE TRANSLATE ELEMENT & SCRIPT -->
+    <!-- This element initializes the translation service but is hidden by CSS. -->
+    <!-- =================================================================== -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+        // Standard function required by Google Translate widget
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                // Using 'inline' layout to access the select box but keeping it hidden.
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- =================================================================== -->
+
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo - Now a clickable element to return to the home page -->
+                <div id="nav-logo-link" class="flex-shrink-0 cursor-pointer">
+                    <img id="nav-logo-img" class="h-6 w-auto" alt="KLYR™ Logo" onerror="this.outerHTML = '<span class=\'text-xl font-bold text-klyr-red\'>KLYR™</span>';">
+                </div>
+                
+                <!-- Right side: Global Icon (Desktop), Desktop Nav, and Mobile Button -->
+                <div class="flex items-center space-x-4">
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                        <a href="#" class="hover:text-klyr-red transition duration-150">THE SOLUTION</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">COST OF CONFUSION</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">CASE STUDIES</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">TECHNOLOGY</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">IMPACT</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150">PRESS</a>
+                        <a href="#" class="hover:text-klyr-red transition duration-150 font-semibold">JOIN THE MOVEMENT</a>
+                    </nav>
+
+                    <!-- Global Icon - Triggers the country modal (Visible ONLY on Desktop) -->
+                    <i id="global-icon-desktop" class="fas fa-globe text-gray-500 hover:text-klyr-red cursor-pointer transition md:ml-4 hidden md:block"></i>
+
+                    <!-- Mobile Menu Button (Hamburger) -->
+                    <button id="mobile-menu-btn" type="button" class="md:hidden text-gray-500 hover:text-klyr-red p-2 rounded-md focus:outline-none -mr-2">
+                        <i id="menu-icon" class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Container (Sidebar Slide-out Panel) -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-[90] transform translate-x-full transition-transform duration-300 md:hidden">
+        <!-- Header area for the mobile menu, only containing the close button -->
+        <div class="flex justify-end items-center h-16 border-b border-gray-100 px-6">
+            <!-- Close Button for Mobile Menu -->
+            <button id="mobile-close-btn" type="button" class="text-gray-500 hover:text-klyr-red p-2 rounded-md focus:outline-none">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <nav class="py-4 space-y-1 px-6">
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">THE SOLUTION</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">COST OF CONFUSION</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">CASE STUDIES</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">TECHNOLOGY</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">IMPACT</a>
+            <a href="#" class="block text-base font-medium text-klyr-dark hover:text-klyr-red py-3 border-b border-gray-100">PRESS</a>
+            <a href="#" class="block text-base font-semibold text-klyr-red hover:text-klyr-red py-3 border-b border-gray-100">JOIN THE MOVEMENT</a>
+            
+            <!-- MOBILE GLOBE LINK (Triggers the modal) -->
+            <a id="global-link-mobile" href="#" class="flex items-center space-x-3 block text-base font-medium text-klyr-dark hover:text-klyr-red py-3">
+                <i class="fas fa-globe text-lg"></i>
+                <span>Select Region / Language</span>
+            </a>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Wrapper for ALL ORIGINAL HOMEPAGE CONTENT -->
+        <div id="homepage-content">
+            <!-- Section 1: Hero - Confusion Costs Lives -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Left Content -->
+                    <div class="space-y-6">
+                        <!-- H1 Text -->
+                        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-snug">
+                            <span class="text-klyr-dark">THE WORLD’S LARGEST UNSEEN LOSS.</span>
+                        </h1>
+                        <!-- Paragraph Text -->
+                        <p class="text-gray-600 text-lg">
+                            Confusion has no industry boundary. It infiltrates every link of global trade — from factories and hospitals to homes and retail shelves. Each mistake appears small; together, they form an invisible catastrophe.
+                        </p>
+                    </div>
+                    <!-- Right Box (Full-bleed image box) -->
+                    <div id="content-box" class="content-box-border-style rounded-lg flex h-full overflow-hidden"> 
+                        <!-- Content Logo -->
+                        <img id="content-logo-img" class="content-logo-border w-full h-full object-cover rounded-lg" alt="Kare Image Placeholder" onerror="this.outerHTML = '<span class=\'text-6xl font-extrabold text-klyr-red\'>KLYR™</span>';">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: The Cost of Confusion - Structured Collections -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 md:pb-24">
+                
+                <!-- The grid container that holds the four columns -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                    <!-- Collection 1: Food & Beverage -->
+                    <div class="flex flex-col h-full">
+                        <h3 class="text-2xl font-bold text-klyr-red mb-3 uppercase">Food & Beverage</h3>
+                        <!-- Applied description-alignment-fix -->
+                        <p class="text-gray-600 text-lg mb-3 description-alignment-fix">Labeling and packaging mix-ups cause massive recalls.</p>
+                        <!-- Card now aligns to the top of the remaining space -->
+                        <div class="w-full md:w-4/5 mx-auto">
+                            <div class="rounded-xl crisis-card-style p-6 text-center">
+                                <div class="space-y-2">
+                                    <p class="text-sm font-semibold text-gray-700 uppercase">Annual loss</p>
+                                    <p class="text-6xl font-extrabold text-klyr-red leading-none">$60B+</p>
+                                    <p class="text-sm font-semibold text-gray-700 uppercase leading-snug">Tons of food <br class="md:hidden"/> destroyed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collection 2: Pharmaceutical & Medical -->
+                    <div class="flex flex-col h-full">
+                        <h3 class="text-2xl font-bold text-klyr-red mb-3 uppercase">Pharmaceutical & Medical</h3>
+                        <!-- Applied description-alignment-fix -->
+                        <p class="text-gray-600 text-lg mb-3 description-alignment-fix">Medication or dosage confusion - 1.5 million injuries per year (U.S.).</p>
+                        <!-- Card now aligns to the top of the remaining space -->
+                        <div class="w-full md:w-4/5 mx-auto">
+                            <div class="rounded-xl crisis-card-style p-6 text-center">
+                                <div class="space-y-2">
+                                    <p class="text-sm font-semibold text-gray-700 uppercase">Annual global cost</p>
+                                    <p class="text-6xl font-extrabold text-klyr-red leading-none">$42B+</p>
+                                    <!-- Placeholder to align layout with the first card on larger screens -->
+                                    <p class="text-sm font-semibold text-gray-700 uppercase opacity-0 select-none hidden md:block">Placeholder</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collection 3: Manufacturing & Logistics -->
+                    <div class="flex flex-col h-full">
+                        <h3 class="text-2xl font-bold text-klyr-red mb-3 uppercase">Manufacturing & Logistics</h3>
+                        <!-- Applied description-alignment-fix -->
+                        <p class="text-gray-600 text-lg mb-3 description-alignment-fix">Batch and product swaps, shipping errors, line contamination.</p>
+                        <!-- Card now aligns to the top of the remaining space -->
+                        <div class="w-full md:w-4/5 mx-auto">
+                            <div class="rounded-xl crisis-card-style p-6 text-center">
+                                <div class="space-y-2">
+                                    <p class="text-sm font-semibold text-gray-700 uppercase">Annual waste</p>
+                                    <p class="text-6xl font-extrabold text-klyr-red leading-none">$300B+</p>
+                                    <!-- Placeholder to align layout with the fourth card on larger screens -->
+                                    <p class="text-sm font-semibold text-gray-700 uppercase opacity-0 select-none hidden md:block">Placeholder</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collection 4: Consumer Safety -->
+                    <div class="flex flex-col h-full">
+                        <h3 class="text-2xl font-bold text-klyr-red mb-3 uppercase">Consumer Safety</h3>
+                        <!-- Applied description-alignment-fix -->
+                        <p class="text-gray-600 text-lg mb-3 description-alignment-fix">Shared or mistaken personal products spread illness and contamination.</p>
+                        <!-- Card now aligns to the top of the remaining space -->
+                        <div class="w-full md:w-4/5 mx-auto">
+                            <div class="rounded-xl crisis-card-style p-6 text-center">
+                                <div class="space-y-2">
+                                    <p class="text-sm font-semibold text-gray-700 uppercase">Human impact immeasurable</p>
+                                    <!-- Changed text-5xl to text-4xl -->
+                                    <p class="text-4xl font-extrabold text-klyr-red leading-snug uppercase">Entirely preventable</p>
+                                    <!-- Placeholder to align layout with the third card on larger screens -->
+                                    <p class="text-sm font-semibold text-gray-700 uppercase opacity-0 select-none hidden md:block">Placeholder</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            <!-- END Section 2 -->
+
+            <!-- Section 4 (Old Section 4): Red Estimate Banner -->
+            <section class="bg-klyr-red py-10">
+                <div class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+                    <p class="text-xl sm:text-2xl mb-1">
+                        Confusion is not random — it’s systemic. KLYR™ repairs the system with clarity.
+
+                    </p>
+                
+                </div>
+            </section>
+
+            <!-- Section 5 (Old Section 5): CTA - Join the Clarity Movement -->
+            <section class="max-w-site mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+                <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+                    JOIN THE CLARITY MOVEMENT
+                </h2>
+                <!-- KLYR is red, ™ is dark -->
+                <p class="text-xl text-gray-700 mb-8">
+                    Become one of the first to experience <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> in action
+                </p>
+                <button id="join-beta-btn" class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 transform hover:scale-105 uppercase tracking-wider">
+                    JOIN THE BETA
+                </button>
+                <!-- Custom Message Box for JS Alert Replacement -->
+                <div id="message-box" class="mt-8 bg-gray-100 border border-gray-300 text-gray-700 p-4 rounded-lg hidden max-w-sm">
+                    Thank you for your interest! The beta sign-up page is coming soon.
+                </div>
+            </section>
+        </div>
+        <!-- END homepage-content -->
+
+
+        <!-- NEW BETA SIGN-UP PAGE -->
+        <section id="beta-signup-page" class="hidden max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <!-- Form Content -->
+            <div id="beta-form-container">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                    Join the Global <span class="text-klyr-red">Clarity Movement</span>
+                </h1>
+                <h2 class="text-xl text-gray-600 mb-8">
+                    Help stop the world’s largest silent catastrophe — confusion itself.
+                </h2>
+                
+                <p class="text-lg text-gray-700 mb-6">
+                    <!-- KLYR is red, ™ is dark -->
+                    <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span> is now entering its global beta phase. We’re inviting consumers, brands, and industry leaders to join the mission to teach clarity to the world. Every scan, every test, every idea helps the AI learn and protect more lives. Be among the first to shape a future without confusion.
+                </p>
+
+                <!-- Registration Form: Background changed to bg-white -->
+                <form id="beta-registration-form" class="space-y-6 bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-gray-100">
+                    <div>
+                        <label for="full_name" class="block text-sm font-medium text-klyr-dark mb-1">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" required class="klyr-input" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-klyr-dark mb-1">Email</label>
+                        <input type="email" id="email" name="email" required class="klyr-input" placeholder="name@company.com">
+                    </div>
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-klyr-dark mb-1">Country</label>
+                        <select id="country-select" name="country" required class="klyr-input appearance-none">
+                            <option value="" disabled selected>Select your country</option>
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="interest" class="block text-sm font-medium text-klyr-dark mb-1">Interest Category</label>
+                        <select id="interest" name="interest" required class="klyr-input appearance-none">
+                            <option value="" disabled selected>Choose a category</option>
+                            <option value="consumer">Consumer</option>
+                            <option value="brand">Brand Partner</option>
+                            <option value="investor">Investor or Collaborator</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 pt-4">
+                        <button type="submit" class="bg-klyr-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded shadow-lg transition duration-300 transform hover:scale-[1.02] uppercase tracking-wider flex-1">
+                            Register Now
+                        </button>
+                        <button type="button" id="share-movement-btn" class="bg-gray-200 hover:bg-gray-300 text-klyr-dark font-semibold py-3 px-6 rounded shadow transition duration-300 transform hover:scale-[1.02] uppercase tracking-wider flex-1">
+                            Share This Movement
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Confirmation Message (Updated to use KLYR colors) -->
+            <div id="beta-confirmation-message" class="hidden text-center bg-white p-10 rounded-xl border-4 border-klyr-red shadow-2xl">
+                <i class="fas fa-check-circle text-6xl text-klyr-red mb-6 animate-pulse"></i>
+                <h3 class="text-3xl font-extrabold text-klyr-dark mb-4">Registration Complete!</h3>
+                <p class="text-xl text-gray-700 font-medium italic">
+                    “Welcome to the Clarity Generation. Together we’re making history.”
+                </p>
+                <button type="button" id="back-to-home-btn" class="mt-8 bg-klyr-dark hover:bg-gray-700 text-white font-bold py-3 px-6 rounded shadow transition duration-300 uppercase tracking-wider">
+                    Back to Homepage
+                </button>
+            </div>
+        </section>
+        <!-- END beta-signup-page -->
+
+    </main>
+
+    <!-- Country Selection Modal -->
+    <div id="country-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] hidden opacity-0 modal-transition">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-4xl p-8 relative transform scale-95 modal-transition">
+            <!-- Close Button (Top Left) -->
+            <button id="close-modal-btn" class="absolute top-6 left-6 text-gray-500 hover:text-klyr-red transition duration-150">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <!-- Multi-column Country List Container -->
+            <div id="country-list-container" class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-4 max-h-[70vh] overflow-y-auto pt-4 pb-2">
+                <!-- Countries will be rendered here by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer - KLYR red styling preserved -->
+    <footer class="bg-gray-50 border-t border-gray-200 pt-12 pb-8">
+        <div class="max-w-super-wide mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Social Icons: Now explicitly klyr-red -->
+            <div class="flex justify-center space-x-6 mb-6">
+                <!-- Changed text-gray-400 to text-klyr-red for primary color -->
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="text-klyr-red hover:text-red-700 transition duration-150"><i class="fab fa-linkedin-in text-2xl"></i></a>
+            </div>
+
+            <!-- Copyright: KLYR in red -->
+            <p class="text-sm text-klyr-dark mb-2" id="copyright-text">
+                &copy;2025 <span class="text-klyr-red">KLYR</span> Sciences Inc. All rights reserved.
+            </p>
+            
+            <!-- Trademarks: KLYR in red, ™ in dark -->
+            <p class="text-xs text-klyr-dark mb-6">
+                <span class="text-klyr-red">KLYR</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">MyKLYR</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">KLYRSCAN</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">KLYRCAM</span><span class="text-klyr-dark">™</span>, 
+                <span class="text-klyr-red">KLYRCLOUD</span><span class="text-klyr-dark">™</span>, 
+                and <span class="text-klyr-red">KLYRAI</span><span class="text-klyr-dark">™</span> are trademarks of <span class="text-klyr-red">KLYR</span>™ Sciences Inc.
+            </p>
+
+            <!-- Policy Links: Now dark text color -->
+            <div class="flex justify-center space-x-4 text-xs text-klyr-dark">
+                <a href="#" class="hover:text-klyr-red transition duration-150">Privacy Policy</a>
+                <span>|</span>
+                <a href="#" class="hover:text-klyr-red transition duration-150">Terms of Use</a>
+                <span>|</span>
+                <a href="#" class="hover:text-klyr-red transition duration-150">Contact Us</a>
+            </div>
+            
+            <!-- Last Line: Now dark text color -->
+            <p class="text-xs text-klyr-dark mt-2">
+                Advancing clarity through technology.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Pure JavaScript for Interaction, Logo Setup, and Page Routing -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Global Data (Countries & Languages) ---
+            const countries = [
+                { name: "Global", sub: "🌎", isGlobal: true, slug: 'global', langCode: 'en' },
+                { name: "Argentina", sub: "", slug: 'ar', langCode: 'es' },
+                { name: "Australia & New Zealand", sub: "", slug: 'au', langCode: 'en' },
+                { name: "Belgium", sub: "", slug: 'be', langCode: 'fr' },
+                { name: "Brazil", sub: "Brasil", slug: 'br', langCode: 'pt' },
+                { name: "Canada", sub: "(English)", slug: 'ca', langCode: 'en' },
+                { name: "Canada", sub: "Le Canada (Français)", slug: 'qc', langCode: 'fr' },
+                { name: "Central America & Caribbean", sub: "América Central y el Caribe", slug: 'cb', langCode: 'es' },
+                { name: "Chile", sub: "", slug: 'cl', langCode: 'es' },
+                { name: "China", sub: "中国", slug: 'cn', langCode: 'zh-CN' },
+                { name: "Colombia", sub: "", slug: 'co', langCode: 'es' },
+                { name: "Croatia", sub: "", slug: 'hr', langCode: 'hr' },
+                { name: "Czech Republic", sub: "", slug: 'cz', langCode: 'cs' },
+                { name: "Ecuador", sub: "", slug: 'ec', langCode: 'es' },
+                { name: "Finland", sub: "", slug: 'fi', langCode: 'fi' },
+                { name: "France", sub: "", slug: 'fr', langCode: 'fr' },
+                { name: "Germany, Austria, Switzerland", sub: "Deutschland, Österreich, Schweiz", slug: 'de', langCode: 'de' },
+                { name: "Greece", sub: "", slug: 'gr', langCode: 'el' },
+                { name: "Hungary", sub: "", slug: 'hu', langCode: 'hu' },
+                { name: "India", sub: "", slug: 'in', langCode: 'en' }, 
+                { name: "Indonesia", sub: "", slug: 'id', langCode: 'id' },
+                { name: "Ireland", sub: "", slug: 'ie', langCode: 'en' },
+                { name: "Italy", sub: "Italia", slug: 'it', langCode: 'it' },
+                { name: "Japan", sub: "日本", slug: 'jp', langCode: 'ja' },
+                { name: "Latvia", sub: "", slug: 'lv', langCode: 'lv' },
+                { name: "Maghreb", sub: "Le Maghreb", slug: 'ma', langCode: 'fr' },
+                { name: "Malaysia", sub: "", slug: 'my', langCode: 'ms' },
+                { name: "Mexico", sub: "México", slug: 'mx', langCode: 'es' },
+                { name: "Netherlands", sub: "", slug: 'nl', langCode: 'nl' },
+                { name: "Norway", sub: "", slug: 'no', langCode: 'no' },
+                { name: "Pakistan", sub: "", slug: 'pk', langCode: 'ur' },
+                { name: "Paraguay", sub: "", slug: 'py', langCode: 'es' },
+                { name: "Peru", sub: "Perú", slug: 'pe', langCode: 'es' },
+                { name: "Philippines", sub: "", slug: 'ph', langCode: 'en' },
+                { name: "Poland", sub: "", slug: 'pl', langCode: 'pl' },
+                { name: "Portugal", sub: "", slug: 'pt', langCode: 'pt' },
+                { name: "Romania", sub: "", slug: 'ro', langCode: 'ro' },
+                { name: "Saudi Arabia", sub: "", slug: 'sa', langCode: 'ar' },
+                { name: "Serbia", sub: "", slug: 'rs', langCode: 'sr' },
+                { name: "Singapore", sub: "", slug: 'sg', langCode: 'en' },
+                { name: "Slovakia", sub: "", slug: 'sk', langCode: 'sk' },
+                { name: "South Africa", sub: "", slug: 'za', langCode: 'en' },
+                { name: "South Korea", sub: "", slug: 'kr', langCode: 'ko' },
+                { name: "Spain", sub: "España", slug: 'es', langCode: 'es' },
+                { name: "Sweden", sub: "Sverige", slug: 'sv', langCode: 'sv' },
+                { name: "Switzerland", sub: "Suisse (Français)", slug: 'ch', langCode: 'fr' }, 
+                { name: "Taiwan", sub: "", slug: 'tw', langCode: 'zh-TW' }, 
+                { name: "Thailand", sub: "", slug: 'th', langCode: 'th' },
+                { name: "Turkey", sub: "Türkiye", slug: 'tr', langCode: 'tr' },
+                { name: "Ukraine", sub: "", slug: 'ua', langCode: 'uk' },
+                { name: "United Kingdom", sub: "", slug: 'uk', langCode: 'en' },
+                { name: "United States of America", sub: "", slug: 'us', langCode: 'en' },
+                { name: "Venezuela", sub: "", slug: 've', langCode: 'es' },
+                { name: "Vietnam", sub: "", slug: 'vn', langCode: 'vi' },
+            ];
+            
+            // Generate a list of all valid slugs for path checking
+            const VALID_SLUGS = countries.map(c => c.slug).filter(s => s !== 'global');
+            
+            // --- Google Translate Functionality ---
+            
+            /**
+             * Finds the hidden Google Translate select box and sets the language.
+             * This relies on the Google Translate Element being initialized and loaded.
+             * @param {string} langCode - The target ISO 639-1 language code (e.g., 'es', 'fr', 'en').
+             */
+            function translatePage(langCode) {
+                // The Google Translate widget creates a select box inside the placeholder div.
+                const translateSelect = document.querySelector('#google_translate_element select');
+                
+                if (translateSelect) {
+                    translateSelect.value = langCode;
+                    // Create and dispatch a 'change' event to trigger the translation
+                    translateSelect.dispatchEvent(new Event('change'));
+                } else {
+                    // Try again in 100ms if not initialized yet (common issue with async loading)
+                    setTimeout(() => {
+                        translatePage(langCode);
+                    }, 100);
+                }
+            }
+
+
+            // --- General Elements ---
+            const messageBox = document.getElementById('message-box');
+
+            // --- Logo & Styling Constants ---
+            const LOGO_TEXT = 'KLYR™';
+            const NAV_LOGO_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/KLYR_Logo-scaled.png'; 
+            const CONTENT_IMG_URL = 'https://plusbrand.com/wp-content/uploads/2025/10/Kare.png'; 
+            const CONTENT_BOX_CLASSES = 'content-box-border-style rounded-lg flex h-full overflow-hidden'; 
+            
+            const navLogoImg = document.getElementById('nav-logo-img');
+            const contentLogoImg = document.getElementById('content-logo-img');
+            const contentBox = document.getElementById('content-box');
+
+            // --- Page Routing Elements ---
+            const homepageContent = document.getElementById('homepage-content');
+            const betaSignupPage = document.getElementById('beta-signup-page');
+            const joinBetaBtn = document.getElementById('join-beta-btn');
+            const backToHomeBtn = document.getElementById('back-to-home-btn');
+            const navLogoLink = document.getElementById('nav-logo-link'); 
+
+            // --- Form Elements ---
+            const countrySelect = document.getElementById('country-select');
+            const registrationForm = document.getElementById('beta-registration-form');
+            const formContainer = document.getElementById('beta-form-container');
+            const confirmationMessage = document.getElementById('beta-confirmation-message');
+            const shareMovementBtn = document.getElementById('share-movement-btn');
+            
+            
+            // --- Modal Elements ---
+            const countryModal = document.getElementById('country-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const countryListContainer = document.getElementById('country-list-container');
+            const modalContent = document.getElementById('modal-content');
+            const globalIconDesktop = document.getElementById('global-icon-desktop');
+            const globalLinkMobile = document.getElementById('global-link-mobile');
+
+            // --- Mobile Menu Elements ---
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileCloseBtn = document.getElementById('mobile-close-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = mobileMenu.querySelectorAll('a'); 
+
+
+            // --- Helper Functions ---
+
+            // Custom alert message function (since we can't use alert())
+            function alertMessage(message, isError = false) {
+                const msgBox = document.getElementById('message-box');
+                if (msgBox) {
+                    msgBox.textContent = message;
+                    msgBox.classList.remove('hidden', 'bg-red-100', 'border-red-400', 'bg-gray-100', 'border-gray-300', 'text-red-800', 'text-gray-700');
+                    if (isError) {
+                         msgBox.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
+                    } else {
+                         msgBox.classList.add('bg-gray-100', 'border-gray-300', 'text-gray-700');
+                    }
+                    
+                    // Reset text back to default after delay
+                    setTimeout(() => {
+                        msgBox.classList.add('hidden');
+                        msgBox.textContent = "Thank you for your interest! The beta sign-up page is coming soon."; 
+                        msgBox.classList.remove('bg-red-100', 'border-red-400', 'text-red-800');
+                        msgBox.classList.add('bg-gray-100', 'border-gray-300', 'text-gray-700');
+                    }, 3000);
+                }
+            }
+            
+            // --- URL Path and Translation Logic ---
+            function setCountryPath(newSlug, newLangCode) {
+                const currentPath = window.location.pathname;
+                
+                // 1. Clean path segments 
+                let pathSegments = currentPath.split('/').filter(p => p.length > 0);
+                let newPathname;
+                
+                // Identify the current slug if it exists
+                const currentSlug = pathSegments.length > 0 && VALID_SLUGS.includes(pathSegments[0]) 
+                                    ? pathSegments[0] 
+                                    : null;
+
+                if (newSlug === 'global' || newLangCode === 'en') {
+                    // Remove slug if one exists
+                    if (currentSlug) {
+                        pathSegments.shift(); 
+                    }
+                    translatePage('en');
+                } else {
+                    // Set a specific country slug
+                    if (currentSlug) {
+                        pathSegments[0] = newSlug;
+                    } else {
+                        pathSegments.unshift(newSlug);
+                    }
+                    translatePage(newLangCode);
+                }
+                
+                // Reconstruct the path
+                newPathname = '/' + pathSegments.join('/');
+                
+                // Normalize path
+                if (newPathname.length > 1 && newPathname.endsWith('/')) {
+                    newPathname = newPathname.replace(/\/+$/, '');
+                }
+                if (newPathname === '//') {
+                    newPathname = '/';
+                }
+
+                // If path changed, update the URL without refresh
+                if (newPathname !== currentPath) {
+                    window.history.pushState({}, '', newPathname);
+                    alertMessage(`Region set to ${newSlug.toUpperCase()}. Content translated to ${newLangCode.toUpperCase()}.`);
+                } else if (newSlug === 'global') {
+                    alertMessage(`You are already in the Global (English) view.`);
+                } else {
+                    alertMessage(`Region is already set to ${newSlug.toUpperCase()} (${newLangCode.toUpperCase()}).`);
+                }
+
+                closeOutModal();
+            }
+            
+            /**
+             * Checks the current URL path for a country slug and triggers translation.
+             * This ensures the translation is "sticky" on refresh or shared links.
+             */
+            function checkAndApplyTranslationOnLoad() {
+                const currentPath = window.location.pathname;
+                const pathSegments = currentPath.split('/').filter(p => p.length > 0);
+                
+                // 1. Check if the first segment is a recognized slug
+                const currentSlug = pathSegments.length > 0 && VALID_SLUGS.includes(pathSegments[0]) 
+                                    ? pathSegments[0] 
+                                    : null;
+                                    
+                if (currentSlug) {
+                    // 2. Find the country object to get the language code
+                    const country = countries.find(c => c.slug === currentSlug);
+                    if (country && country.langCode !== 'en') {
+                        // 3. Apply translation if not English
+                        console.log(`Applying sticky translation for slug ${currentSlug} (${country.langCode})`);
+                        translatePage(country.langCode);
+                    }
+                }
+            }
+
+
+            // --- Initialization Functions ---
+
+            // Apply Content Box Classes
+            if (contentBox) {
+                contentBox.className = CONTENT_BOX_CLASSES; 
+            }
+
+            // Populate the Logo in two locations
+            if (navLogoImg) {
+                navLogoImg.src = NAV_LOGO_URL; 
+                navLogoImg.alt = LOGO_TEXT + ' Logo (Navigation)';
+            }
+            if (contentLogoImg) {
+                contentLogoImg.src = CONTENT_IMG_URL; 
+                contentLogoImg.alt = 'Kare Image Placeholder';
+            }
+
+            // Populate Country Select Dropdown for the Beta Form
+            function populateCountryDropdown() {
+                countries.filter(c => !c.isGlobal).forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.slug; 
+                    option.textContent = country.name + (country.sub ? ` (${country.sub})` : '');
+                    countrySelect.appendChild(option);
+                });
+            }
+            populateCountryDropdown();
+            
+            // Apply sticky translation immediately on load
+            checkAndApplyTranslationOnLoad();
+
+            
+            // --- Page Routing Logic ---
+
+            // Function to reset the view to the Home Page
+            function goToHomePage() {
+                // Only act if we are on the beta page
+                if (!betaSignupPage.classList.contains('hidden')) {
+                    betaSignupPage.classList.add('hidden');
+                    homepageContent.classList.remove('hidden');
+                    confirmationMessage.classList.add('hidden'); // Ensure confirmation is hidden
+                    formContainer.classList.remove('hidden');    // Ensure form is visible for next time
+                    registrationForm.reset();                   // Reset form data
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // 1. Switch to Beta Page
+            joinBetaBtn.addEventListener('click', () => {
+                homepageContent.classList.add('hidden');
+                betaSignupPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top for better UX
+            });
+
+            // 2. Switch back to Home Page Button
+            backToHomeBtn.addEventListener('click', goToHomePage);
+            
+            // 3. Switch back to Home Page (Logo Click)
+            if (navLogoLink) {
+                navLogoLink.addEventListener('click', goToHomePage);
+            }
+
+
+            // --- Form Submission Logic ---
+            registrationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(registrationForm);
+                const data = Object.fromEntries(formData.entries());
+
+                console.log('Beta Registration Submitted:', data);
+
+                formContainer.classList.add('hidden');
+                confirmationMessage.classList.remove('hidden');
+                
+                registrationForm.reset();
+            });
+
+            // Share Movement Button
+            shareMovementBtn.addEventListener('click', () => {
+                alertMessage('Sharing is caring! Copy the current URL to share the movement.', false);
+            });
+
+
+            // --- Mobile Menu Logic ---
+            function toggleMobileMenu() {
+                const isMenuHidden = mobileMenu.classList.contains('translate-x-full');
+                
+                if (isMenuHidden) {
+                    mobileMenu.classList.remove('translate-x-full');
+                    document.body.classList.add('overflow-hidden');
+                } else {
+                    mobileMenu.classList.add('translate-x-full');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            }
+
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            }
+            if (mobileCloseBtn) {
+                mobileCloseBtn.addEventListener('click', toggleMobileMenu);
+            }
+
+            // Close mobile menu if any standard link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('translate-x-full') && link.id !== 'global-link-mobile') {
+                        toggleMobileMenu();
+                        
+                        if (link.textContent.includes('JOIN THE MOVEMENT')) {
+                            setTimeout(() => {
+                                homepageContent.classList.add('hidden');
+                                betaSignupPage.classList.remove('hidden');
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 300); 
+                        }
+                    }
+                });
+            });
+
+
+            // --- Country Modal Logic (Shared with global-link-mobile) ---
+
+            function openModal() {
+                if (!mobileMenu.classList.contains('translate-x-full')) {
+                    toggleMobileMenu(); // Close mobile menu if open
+                }
+
+                countryModal.classList.remove('hidden');
+                countryModal.offsetHeight; 
+                countryModal.classList.add('opacity-100');
+                countryModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+                document.body.classList.add('overflow-hidden'); 
+            }
+
+            function closeOutModal() {
+                countryModal.classList.remove('opacity-100');
+                countryModal.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+
+                setTimeout(() => {
+                    countryModal.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden'); 
+                }, 300);
+            }
+
+            // Render country links for the Modal
+            countries.forEach(country => {
+                const link = document.createElement('a');
+                link.href = "#"; 
+                
+                let content = country.name;
+                let className = 'text-klyr-dark text-sm hover:text-klyr-red transition duration-150';
+                
+                if (country.isGlobal) {
+                    content = `<span class="font-bold">${country.name}</span> <span class="text-sm text-gray-500">${country.sub}</span>`;
+                    className = 'font-bold block text-klyr-dark hover:text-klyr-red transition duration-150';
+                } else if (country.sub) {
+                    content = `${country.name} <span class="text-xs text-gray-500">| ${country.sub}</span>`;
+                }
+                
+                link.innerHTML = content;
+                link.className = className;
+                
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    setCountryPath(country.slug, country.langCode); 
+                };
+
+                countryListContainer.appendChild(link);
+            });
+
+            // Attach listener to Desktop Icon and Mobile Link
+            if (globalIconDesktop) {
+                globalIconDesktop.addEventListener('click', openModal);
+            }
+            if (globalLinkMobile) {
+                globalLinkMobile.addEventListener('click', openModal);
+            }
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeOutModal);
+            }
+            
+            // Close modal if user clicks on the backdrop
+            if (countryModal) {
+                countryModal.addEventListener('click', (e) => {
+                    if (e.target === countryModal) {
+                        closeOutModal();
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
